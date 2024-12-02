@@ -352,10 +352,7 @@ dependencies = [
 name = "hoopics"
 version = "0.1.0"
 dependencies = [
- "serde",
- "serde_json",
- "tokio",
- "warp",
+ "service",
 ]
 
 [[package]]
@@ -1091,6 +1088,16 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
+]
+
+[[package]]
+name = "service"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tokio",
+ "warp",
 ]
 
 [[package]]

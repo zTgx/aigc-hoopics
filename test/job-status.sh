@@ -1,0 +1,1 @@
+curl -X POST http://localhost:3030/v1/job-status -H "Authorization: Bearer valid_token" -H "Content-Type: application/json" -d '{"job_ids": ["id1", "id2", "id3"]}'
