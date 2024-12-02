@@ -1,0 +1,7 @@
+[workspace]
+members = [ "config",
+    "hoopics", 
+    "ollama"
+]
+resolver = "2"
+
