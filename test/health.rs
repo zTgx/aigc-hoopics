@@ -1,1 +1,0 @@
-curl -X POST http://localhost:3030/v1/health -H "Content-Type: application/json" -w "HTTP Status Code: %{http_code}\n"

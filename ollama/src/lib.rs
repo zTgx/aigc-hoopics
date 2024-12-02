@@ -48,7 +48,7 @@ impl Llama {
         Self { client }
     }
 
-    pub async fn llama_sd_prompts(&self, prompt: &str) -> Result<String, Box<dyn Error>> {   
+    pub async fn prompt(&self, prompt: &str) -> Result<String, Box<dyn Error>> {   
         let post_data = PostData::new(&CONFIG.ollama.model, prompt);
 
         println!("post_data: {:?}", post_data);

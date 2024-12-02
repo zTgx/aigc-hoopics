@@ -1094,6 +1094,7 @@ dependencies = [
 name = "service"
 version = "0.1.0"
 dependencies = [
+ "ollama",
  "serde",
  "serde_json",
  "tokio",
