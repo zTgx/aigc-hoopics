@@ -2,6 +2,6 @@
 members = [ "config",
     "hoopics", 
     "ollama"
-, "service"]
+, "psql", "service"]
 resolver = "2"
 

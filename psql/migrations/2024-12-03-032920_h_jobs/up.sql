@@ -1,0 +1,23 @@
+CREATE TABLE h_jobs (
+    id BIGSERIAL PRIMARY KEY,
+    job_type VARCHAR(64) NOT NULL,
+    -- prompt VARCHAR(2048) NOT NULL,
+    -- img_link VARCHAR(255),
+    -- module VARCHAR(32) NOT NULL,
+    -- job_id VARCHAR(128) NOT NULL UNIQUE,
+    -- job_status VARCHAR(32) NOT NULL,
+    -- job_processor VARCHAR(128) NOT NULL,
+    -- job_priority INTEGER NOT NULL,
+    -- created_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    -- description VARCHAR(1024),
+    -- api_key VARCHAR(255) NOT NULL,
+    -- job_style VARCHAR(32) NOT NULL,
+    -- negative_prompt VARCHAR(1024),
+    -- results VARCHAR(1024),
+    -- updated_time TIMESTAMP WITHOUT TIME ZONE,
+    -- new_prompt VARCHAR(2048),
+    -- reason VARCHAR(128),
+    -- aws_results VARCHAR(1024),
+    -- prompt_score INTEGER,
+    -- resolution VARCHAR(64)
+);

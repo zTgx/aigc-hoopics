@@ -5,3 +5,10 @@ endpoint = "https://api.hoopics.com/v1/"
 [ollama]
 model = "impactframes/llama3_ifai_sd_prompt_mkr_q4km"
 url = "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443/ollama/generate"
+
+[postgres]
+host = "127.0.0.1"
+port = 5432
+user = "postgres"
+password = "111"
+dbname = "hoopd"

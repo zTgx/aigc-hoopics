@@ -6,6 +6,7 @@ use std::{fs, path::PathBuf};
 pub struct Config {
     pub ollama: OllamaConfig,
     pub hoopics: HoopicsConfig,
+    pub postgres: PsqlConfig,
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -27,6 +28,15 @@ impl Default for OllamaConfig {
 pub struct HoopicsConfig {
     pub api_key: String,
     pub endpoint: String,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct PsqlConfig {
+    pub host: String,
+    pub port: u32,
+    pub user: String,
+    pub password: String,
+    pub dbname: String,
 }
 
 // 全局静态配置变量
@@ -52,6 +62,7 @@ pub fn get(section: &str) -> Option<&'static dyn std::fmt::Debug> {
     match section {
         "ollama" => Some(&CONFIG.ollama),
         "hoopics" => Some(&CONFIG.hoopics),
+        "postgres" => Some(&CONFIG.postgres),
         _ => None,
     }
 }
