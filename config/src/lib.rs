@@ -1,7 +1,7 @@
 use lazy_static::lazy_static;
 use serde::Deserialize;
-use std::{fs, path::PathBuf};
 use std::fmt;
+use std::{fs, path::PathBuf};
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Config {

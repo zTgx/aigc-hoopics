@@ -1,7 +1,6 @@
 use config::CONFIG;
 use postgres::{Client, Error, NoTls, Row};
 
-
 #[macro_export]
 macro_rules! create_connection_postgres_string {
     ($host:expr, $user:expr, $password:expr, $port:expr, $dbname:expr) => {
@@ -23,9 +22,7 @@ pub struct Engine {
 impl Engine {
     pub fn new() -> Self {
         let client = Client::connect(&database_url(), NoTls).unwrap();
-        Self {
-            client
-        }
+        Self { client }
     }
 }
 
