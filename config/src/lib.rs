@@ -1,6 +1,7 @@
 use lazy_static::lazy_static;
 use serde::Deserialize;
 use std::{fs, path::PathBuf};
+use std::fmt;
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Config {
@@ -38,6 +39,16 @@ pub struct PsqlConfig {
     pub user: String,
     pub password: String,
     pub dbname: String,
+}
+
+impl fmt::Display for PsqlConfig {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "host={} user={} password={} port={} dbname={}",
+            self.host, self.user, self.password, self.port, self.dbname
+        )
+    }
 }
 
 // 全局静态配置变量
