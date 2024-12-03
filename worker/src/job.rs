@@ -1,3 +1,4 @@
+use sdxl::SDXLJobRequest;
 use serde::{Deserialize, Serialize};
 use inspector::Inspector;
 
@@ -34,5 +35,18 @@ pub struct JobParams {
 impl Inspector for JobParams {
     fn inspect(&self) -> bool {
         true
+    }
+}
+
+impl From<Job> for SDXLJobRequest {
+    fn from(item: Job) -> Self {
+        SDXLJobRequest { 
+            prompt: item.params.prompt,
+            job_id: item.id,
+            style: item.params.job_style,
+            model_type: item.params.model,
+            width: item.params.width,
+            height: item.params.height, 
+        }
     }
 }

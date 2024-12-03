@@ -44,6 +44,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "async_once"
+version = "0.2.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2ce4f10ea3abcd6617873bae9f91d1c5332b4a778bd9ce34d0cd517474c1de82"
+
+[[package]]
 name = "autocfg"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -153,6 +159,10 @@ dependencies = [
  "serde",
  "toml",
 ]
+
+[[package]]
+name = "constant"
+version = "0.1.0"
 
 [[package]]
 name = "core-foundation"
@@ -1216,6 +1226,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
+name = "sdxl"
+version = "0.1.0"
+dependencies = [
+ "async_once",
+ "config",
+ "reqwest",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "security-framework"
 version = "2.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2051,6 +2072,7 @@ version = "0.1.0"
 dependencies = [
  "inspector",
  "lazy_static",
+ "sdxl",
  "serde",
  "serde_json",
 ]

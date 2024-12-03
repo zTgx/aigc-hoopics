@@ -3,6 +3,8 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 
+use sdxl::{SDXLJobRequest};
+
 use crate::job::Job;
 
 pub struct JobQueue {
@@ -46,4 +48,7 @@ impl JobQueue {
     }
 }
 
-fn do_job(job: Job) {}
+fn do_job(job: Job) {
+    let req: SDXLJobRequest = job.into();
+    // handle_sdxl_service(req);
+}

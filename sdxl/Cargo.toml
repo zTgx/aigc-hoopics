@@ -1,11 +1,11 @@
 [package]
-name = "worker"
+name = "sdxl"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-lazy_static = "1.5.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-inspector = { path = "../inspector" }
-sdxl = { path = "../sdxl" }
+config = { path = "../config" }
+reqwest = { version = "0.11", features = ["json"] }
+async_once = "0.2.6"

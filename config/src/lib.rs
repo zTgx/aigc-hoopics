@@ -8,6 +8,8 @@ pub struct Config {
     pub ollama: OllamaConfig,
     pub hoopics: HoopicsConfig,
     pub postgres: PsqlConfig,
+    pub sdxl: SDXLConfig,
+    pub flux: FluxConfig,
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -51,6 +53,16 @@ impl fmt::Display for PsqlConfig {
     }
 }
 
+#[derive(Deserialize, Debug, Clone)]
+pub struct SDXLConfig {
+    pub normal: String,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct FluxConfig {
+    pub normal: String,
+}
+
 // 全局静态配置变量
 lazy_static! {
     pub static ref CONFIG: Config = load_config("config.toml").expect("Failed to load config");
@@ -75,6 +87,8 @@ pub fn get(section: &str) -> Option<&'static dyn std::fmt::Debug> {
         "ollama" => Some(&CONFIG.ollama),
         "hoopics" => Some(&CONFIG.hoopics),
         "postgres" => Some(&CONFIG.postgres),
+        "sdxl" => Some(&CONFIG.sdxl),
+        "flux" => Some(&CONFIG.flux),
         _ => None,
     }
 }

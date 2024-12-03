@@ -5,6 +5,7 @@ use job::Job;
 use lazy_static::lazy_static;
 use queue::JobQueue;
 use std::thread;
+use async_once::AsyncOnce;
 
 
 pub struct Worker {
@@ -27,8 +28,10 @@ impl Worker {
 
         // Start processing jobs in a separate thread
         thread::spawn(move || {
-            let job_queue = JobQueue { queue: queue_clone };
-            job_queue.process_jobs();
+            AsyncOnce::new(async {
+                let job_queue = JobQueue { queue: queue_clone };
+                job_queue.process_jobs();    
+            });
         });
     }
 }

@@ -12,3 +12,9 @@ port = 5432
 user = "postgres"
 password = "111"
 dbname = "hoopd"
+
+[sdxl]
+normal = "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443"
+
+[flux]
+normal = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
