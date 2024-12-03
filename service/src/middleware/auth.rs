@@ -1,5 +1,5 @@
-use warp::Filter;
 use serde::{Deserialize, Serialize};
+use warp::Filter;
 
 // Define a struct for user context if needed
 #[derive(Debug, Deserialize, Serialize)]
@@ -21,13 +21,14 @@ fn validate_token(token: &str) -> bool {
 
 // Filter for authenticated routes
 pub fn with_auth() -> impl Filter<Extract = (User,), Error = warp::Rejection> + Clone {
-    warp::header::optional("authorization")
-        .and_then(|auth_header: Option<String>| async move {
-            match auth_header {
-                Some(token) if validate_token(&token) => {
-                    Ok(User { name: "Authenticated User".to_string() }) // Return user info or context
-                }
-                _ => Err(warp::reject::custom(Unauthorized)),
+    warp::header::optional("authorization").and_then(|auth_header: Option<String>| async move {
+        match auth_header {
+            Some(token) if validate_token(&token) => {
+                Ok(User {
+                    name: "Authenticated User".to_string(),
+                }) // Return user info or context
             }
-        })
+            _ => Err(warp::reject::custom(Unauthorized)),
+        }
+    })
 }

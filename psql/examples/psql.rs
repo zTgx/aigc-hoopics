@@ -1,9 +1,10 @@
 use psql::{db::establish_connection, insert_job, models::HJobs};
 
-
 fn main() {
     let pool = establish_connection();
-    let mut conn = pool.get().expect("Failed to get a connection from the pool");
+    let mut conn = pool
+        .get()
+        .expect("Failed to get a connection from the pool");
 
     let new_job = HJobs {
         id: 1, // Assuming id is auto-incremented by the database

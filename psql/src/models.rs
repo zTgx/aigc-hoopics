@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
-use diesel::prelude::*;
 use crate::schema::h_jobs;
-use diesel::sql_types::{BigInt, Varchar, Nullable, Timestamp};
+use diesel::prelude::*;
+use diesel::sql_types::{BigInt, Nullable, Timestamp, Varchar};
+use serde::{Deserialize, Serialize};
 
 #[derive(QueryableByName, Queryable, Insertable, Selectable, Debug, Serialize, Deserialize)]
 #[diesel(table_name = h_jobs)] // Ensure this matches your schema definition

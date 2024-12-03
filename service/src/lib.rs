@@ -1,6 +1,9 @@
 pub mod api;
+pub mod error;
 pub mod middleware;
-use middleware::routes::api_routes;
+pub mod routes;
+
+use routes::api_routes;
 
 #[tokio::main]
 pub async fn start() {
@@ -9,7 +12,5 @@ pub async fn start() {
 
     // Start the server on port 3030
     println!("Server running on http://127.0.0.1:3030");
-    warp::serve(api_routes)
-        .run(([127, 0, 0, 1], 3030))
-        .await;
+    warp::serve(api_routes).run(([127, 0, 0, 1], 3030)).await;
 }

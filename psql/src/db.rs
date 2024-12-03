@@ -1,13 +1,17 @@
+use config::CONFIG;
 use diesel::r2d2::{ConnectionManager, Pool};
 use diesel::PgConnection;
-use config::CONFIG;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 
 fn database_url() -> String {
     format!(
         "postgres://{}:{}@{}:{}/{}",
-        CONFIG.postgres.user, CONFIG.postgres.password, CONFIG.postgres.host, CONFIG.postgres.port, CONFIG.postgres.dbname
+        CONFIG.postgres.user,
+        CONFIG.postgres.password,
+        CONFIG.postgres.host,
+        CONFIG.postgres.port,
+        CONFIG.postgres.dbname
     )
 }
 

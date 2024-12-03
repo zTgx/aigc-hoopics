@@ -18,8 +18,9 @@ pub struct OllamaConfig {
 impl Default for OllamaConfig {
     fn default() -> Self {
         OllamaConfig {
-            url: "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443/ollama/generate".to_string(), // 自定义默认URL
-            model: "impactframes/llama3_ifai_sd_prompt_mkr_q4km".to_string(),   // 自定义默认模型
+            url: "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443/ollama/generate"
+                .to_string(), // 自定义默认URL
+            model: "impactframes/llama3_ifai_sd_prompt_mkr_q4km".to_string(), // 自定义默认模型
         }
     }
 }
@@ -48,10 +49,10 @@ lazy_static! {
 fn load_config(filename: &str) -> Result<Config, Box<dyn std::error::Error>> {
     // 获取项目根目录
     let mut path = PathBuf::from(std::env::current_dir()?);
-    
+
     // 将配置文件名添加到路径中
     path.push(filename);
-    
+
     let contents = fs::read_to_string(path)?;
     let config: Config = toml::from_str(&contents)?;
     Ok(config)

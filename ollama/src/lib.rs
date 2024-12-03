@@ -1,7 +1,7 @@
+use config::CONFIG;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
-use config::CONFIG;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct PostData {
@@ -48,12 +48,14 @@ impl Llama {
         Self { client }
     }
 
-    pub async fn prompt(&self, prompt: &str) -> Result<String, Box<dyn Error>> {   
+    pub async fn prompt(&self, prompt: &str) -> Result<String, Box<dyn Error>> {
         let post_data = PostData::new(&CONFIG.ollama.model, prompt);
 
         println!("post_data: {:?}", post_data);
 
-        let resp = self.client.post(CONFIG.ollama.url.clone())
+        let resp = self
+            .client
+            .post(CONFIG.ollama.url.clone())
             .json(&post_data)
             .send()
             .await?;
