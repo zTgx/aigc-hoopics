@@ -1,4 +1,4 @@
 pub mod health;
-pub mod job;
+pub mod submit_job;
 pub mod job_status;
 pub mod prompt;

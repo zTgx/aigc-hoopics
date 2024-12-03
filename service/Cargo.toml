@@ -10,7 +10,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 ollama = { path = "../ollama" }
 worker = { path = "../worker" }
-
+inspector = { path = "../inspector" }
 
 [dependencies.uuid]
 version = "1.11.0"

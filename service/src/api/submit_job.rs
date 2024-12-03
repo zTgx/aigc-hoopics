@@ -1,34 +1,25 @@
 use crate::middleware::auth::User;
-use serde::{Deserialize, Serialize};
-use serde_json::json;
+use serde::Serialize;
 use uuid::Uuid;
 use warp::http::StatusCode;
 use warp::reply::Reply;
-use worker::{submit_job, Job};
+use worker::job::{Job, JobParams};
+use worker::submit_job;
+use inspector::Inspector;
 
-// Define a struct for the incoming job IDs
-#[derive(Debug, Deserialize, Serialize)]
-pub struct JobRequest {
-    pub job: String,
-}
+pub type JobRequest = JobParams;
 
-// Define a struct for the response
 #[derive(Debug, Serialize)]
 pub struct JobResponse {
     pub message: String,
 }
 
-// Handle the request for job status
 pub async fn handle_request(
     _user: User,
-    request: JobRequest,
+    job_params: JobRequest,
 ) -> Result<impl Reply, warp::Rejection> {
-    // Process the incoming JSON data (job_ids)
-    let job_id = Uuid::new_v4();
-    let job = Job {
-        id: job_id.to_string(),
-        params: json!(true),
-    };
+    job_params.inspect();
+    let job = Job::new(Uuid::new_v4().to_string(), job_params);
 
     println!("Receive job: {:?}", job);
 

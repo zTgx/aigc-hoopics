@@ -1,9 +1,9 @@
-// src/job_queue.rs
-use crate::Job;
 use std::collections::VecDeque;
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
+
+use crate::job::Job;
 
 pub struct JobQueue {
     pub queue: Arc<Mutex<VecDeque<Job>>>,

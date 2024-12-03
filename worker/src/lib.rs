@@ -1,15 +1,11 @@
 pub mod queue;
+pub mod job;
 
+use job::Job;
 use lazy_static::lazy_static;
 use queue::JobQueue;
-use serde::{Deserialize, Serialize};
 use std::thread;
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Job {
-    pub id: String,
-    pub params: serde_json::Value, // Store job parameters as JSON
-}
 
 pub struct Worker {
     pub queue: JobQueue,

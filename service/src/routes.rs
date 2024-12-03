@@ -1,7 +1,7 @@
 use warp::Filter;
 
 use crate::{
-    api::{health, job, job_status, prompt},
+    api::{health, submit_job, job_status, prompt},
     middleware::auth::with_auth,
 };
 
@@ -24,11 +24,11 @@ fn v1_routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejectio
         .and(warp::body::json()) // Expecting JSON body
         .and_then(prompt::handle_request);
 
-    let job = warp::path!("v1" / "job")
+    let job = warp::path!("v1" / "submit-job")
         .and(warp::post())
         .and(with_auth()) // Requires authorization
         .and(warp::body::json()) // Expecting JSON body
-        .and_then(job::handle_request);
+        .and_then(submit_job::handle_request);
 
     // Combine routes
     health.or(status).or(prompt).or(job)

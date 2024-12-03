@@ -1,7 +1,12 @@
 [workspace]
-members = [ "config",
+members = [ 
+    "inspector", 
+    "config",
     "hoopics", 
-    "ollama"
-, "psql", "service", "worker"]
+    "ollama",
+    "psql", 
+    "service", 
+    "worker"
+]
 resolver = "2"
 

@@ -685,6 +685,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "inspector"
+version = "0.1.0"
+
+[[package]]
 name = "ipnet"
 version = "2.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1282,6 +1286,7 @@ dependencies = [
 name = "service"
 version = "0.1.0"
 dependencies = [
+ "inspector",
  "ollama",
  "serde",
  "serde_json",
@@ -2044,6 +2049,7 @@ dependencies = [
 name = "worker"
 version = "0.1.0"
 dependencies = [
+ "inspector",
  "lazy_static",
  "serde",
  "serde_json",
