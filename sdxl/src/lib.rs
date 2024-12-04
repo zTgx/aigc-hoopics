@@ -1,6 +1,7 @@
-use serde::{Deserialize, Serialize};
 use config::CONFIG;
 use reqwest::Client;
+use serde::{Deserialize, Serialize};
+use std::time::Duration;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SDXLJobRequest {
@@ -19,12 +20,14 @@ pub async fn handle_sdxl_service(sdxl_request: SDXLJobRequest) {
     // Create a new HTTP client
     let client = Client::new();
 
-    // Send the POST request
-    let response = client.post(&link)
+    // Send the POST request asynchronously
+    let response = client
+        .post(&link)
         .header("Content-Type", "application/json")
         .json(&sdxl_request) // Automatically serializes the struct to JSON
         .timeout(Duration::from_secs(6)) // Set timeout
-        .send() // This is now a blocking call
+        .send() // This is now an asynchronous call
+        .await // Await the response
         .unwrap(); // Handle errors appropriately in production code
 
     println!("sdxl response: {:?}", response);
@@ -35,4 +38,4 @@ pub async fn handle_sdxl_service(sdxl_request: SDXLJobRequest) {
     } else {
         eprintln!("Failed to send job request: {}", response.status());
     }
-} 
+}

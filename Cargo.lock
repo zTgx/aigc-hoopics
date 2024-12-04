@@ -2070,11 +2070,13 @@ dependencies = [
 name = "worker"
 version = "0.1.0"
 dependencies = [
+ "async_once",
  "inspector",
  "lazy_static",
  "sdxl",
  "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]

@@ -1,23 +1,20 @@
+use inspector::Inspector;
 use sdxl::SDXLJobRequest;
 use serde::{Deserialize, Serialize};
-use inspector::Inspector;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Job {
     pub id: String,
-    pub params: JobParams
+    pub params: JobParams,
 }
 
 impl Job {
     pub fn new(id: String, params: JobParams) -> Self {
-        Self {
-            id, 
-            params
-        }
+        Self { id, params }
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JobParams {
     pub prompt: String,
     pub negative_prompt: String,
@@ -27,7 +24,7 @@ pub struct JobParams {
     pub description: String,
     pub job_style: String,
     pub model: String,
-    pub width: u32, // Assuming width is an unsigned integer
+    pub width: u32,  // Assuming width is an unsigned integer
     pub height: u32, // Assuming height is an unsigned integer
     pub rewrite_prompt: bool,
 }
@@ -40,13 +37,13 @@ impl Inspector for JobParams {
 
 impl From<Job> for SDXLJobRequest {
     fn from(item: Job) -> Self {
-        SDXLJobRequest { 
+        SDXLJobRequest {
             prompt: item.params.prompt,
             job_id: item.id,
             style: item.params.job_style,
             model_type: item.params.model,
             width: item.params.width,
-            height: item.params.height, 
+            height: item.params.height,
         }
     }
 }

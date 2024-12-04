@@ -1,7 +1,7 @@
 use warp::Filter;
 
 use crate::{
-    api::{health, submit_job, job_status, prompt},
+    api::{health, job_status, prompt, submit_job},
     middleware::auth::with_auth,
 };
 

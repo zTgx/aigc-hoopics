@@ -1,11 +1,11 @@
 use crate::middleware::auth::User;
+use inspector::Inspector;
 use serde::Serialize;
 use uuid::Uuid;
 use warp::http::StatusCode;
 use warp::reply::Reply;
+use worker::add_job;
 use worker::job::{Job, JobParams};
-use worker::submit_job;
-use inspector::Inspector;
 
 pub type JobRequest = JobParams;
 
@@ -24,7 +24,7 @@ pub async fn handle_request(
     println!("Receive job: {:?}", job);
 
     // 直接发给Worker立马返回
-    submit_job(job);
+    add_job(job).await;
 
     // Create a response object
     let response = JobResponse {
