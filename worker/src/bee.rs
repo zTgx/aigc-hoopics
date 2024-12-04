@@ -1,8 +1,10 @@
-use primitives::Job;
 use crate::queue::JobQueue;
+use dispatcher::Dispatcher;
+use primitives::Job;
 use tokio::sync::{mpsc, OnceCell};
 
 pub struct Worker;
+
 impl Worker {
     fn new() -> Self {
         Worker {}
@@ -13,13 +15,14 @@ impl Worker {
         tokio::spawn(async move {
             println!("Starting job processing...");
 
+            let dispatcher = Dispatcher::new();
             while let Some(job) = receiver.recv().await {
                 // Process each job received from the channel
                 println!("Processing job: {:?}", job);
 
                 // Here you would call your job processing logic
                 // dispatch(job).await;
-                dispatcher::dispatch(job).await;
+                dispatcher.dispatch(job).await;
             }
         });
     }

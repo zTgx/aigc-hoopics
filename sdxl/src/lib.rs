@@ -1,49 +1,76 @@
 use config::CONFIG;
-use primitives::{sdxl::SDXLJobRequest, Job};
+use primitives::{
+    job_status::{JobResult, JobStatusReq},
+    sdxl::{Img2ImgRequest, SDXLJobRequest},
+    Job, JobType,
+};
 use reqwest::Client;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use std::time::Duration;
 
-pub async fn handle_sdxl_service(job: Job) {
-    let data: SDXLJobRequest = job.into();
-    
-    // Assuming CONFIG.sdxl.normal is a valid URL
-    let link = format!("{}/txt2img", CONFIG.sdxl.normal);
+pub struct SDXLClient {
+    client: Client,
+}
 
-    // Create a new HTTP client
-    let client = Client::new();
+impl SDXLClient {
+    pub fn new() -> Self {
+        Self {
+            client: Client::new(),
+        }
+    }
 
-    // Send the POST request asynchronously
-    let response = client
-        .post(&link)
-        .header("Content-Type", "application/json")
-        .json(&data) // Automatically serializes the struct to JSON
-        .timeout(Duration::from_secs(6)) // Set timeout
-        .send() // This is now an asynchronous call
-        .await // Await the response
-        .unwrap(); // Handle errors appropriately in production code
+    pub async fn handle(&self, job: Job) {
+        if job.params.job_type == JobType::Txt2Img {
+            return self.handle_txt_2_img(job).await;
+        }
 
-    println!("sdxl response: {:?}", response);
-
-    // Check if the response was successful
-    if response.status().is_success() {
-        println!("Job request sent successfully!");
-    } else {
-        eprintln!("Failed to send job request: {}", response.status());
+        if job.params.job_type == JobType::Img2Img {
+            return self.handle_img_2_img(job).await;
+        }
     }
 }
 
-// Define a struct for the incoming job IDs
-#[derive(Debug, Deserialize, Serialize)]
-pub struct JobStatusReq {
-    pub job_ids: Vec<String>, // Expecting an array of strings
+impl SDXLClient {
+    pub async fn handle_txt_2_img(&self, job: Job) {
+        let data: SDXLJobRequest = job.into();
+        let url = format!("{}/txt2img", CONFIG.sdxl.normal);
+
+        self.post(&data, &url).await
+    }
+
+    pub async fn handle_img_2_img(&self, job: Job) {
+        let data: Img2ImgRequest = job.into();
+        let url = format!("{}/img2img", CONFIG.sdxl.normal);
+
+        self.post(&data, &url).await
+    }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct JobResult {
-    pub file_urls: Vec<String>, // A vector to hold multiple file URLs
-    pub job_id: String,         // The job ID
-    pub status: String,         // The status of the job
+impl SDXLClient {
+    async fn post<T>(&self, data: &T, url: &str)
+    where
+        T: Serialize + ?Sized,
+    {
+        // Send the POST request asynchronously
+        let response = self
+            .client
+            .post(url)
+            .header("Content-Type", "application/json")
+            .json(&data) // Automatically serializes the struct to JSON
+            .timeout(Duration::from_secs(6)) // Set timeout
+            .send() // This is now an asynchronous call
+            .await // Await the response
+            .unwrap(); // Handle errors appropriately in production code
+
+        println!("sdxl response: {:?}", response);
+
+        // Check if the response was successful
+        if response.status().is_success() {
+            println!("Job request sent successfully!");
+        } else {
+            eprintln!("Failed to send job request: {}", response.status());
+        }
+    }
 }
 
 pub async fn handle_job_status(job_ids: Vec<String>) -> Vec<JobResult> {

@@ -9,7 +9,7 @@ curl -X POST http://localhost:3030/v1/submit-job \
     "priority": 1,
     "description": "",
     "job_style": "normal",
-    "model": "SDXL",
+    "model": 0,
     "width": 1024,
     "height": 1024,
     "rewrite_prompt": true

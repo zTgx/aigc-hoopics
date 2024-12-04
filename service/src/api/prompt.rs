@@ -1,8 +1,8 @@
 use crate::error::ServiceError;
 use crate::middleware::auth::User;
+use inspector::Inspector;
 use ollama::Llama;
 use primitives::ollama::{PromptRequest, PromptResponse};
-use inspector::Inspector;
 
 pub async fn handle_request(
     _user: User,

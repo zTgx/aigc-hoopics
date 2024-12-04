@@ -1,5 +1,5 @@
-use warp::reply::Reply;
 use primitives::health::HealthCheckResponse;
+use warp::reply::Reply;
 
 pub fn handle_request() -> impl Reply {
     // Create a response object
