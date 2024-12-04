@@ -1,17 +1,8 @@
 use config::CONFIG;
+use primitives::sdxl::SDXLJobRequest;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SDXLJobRequest {
-    pub prompt: String,
-    pub job_id: String,
-    pub style: String,
-    pub model_type: String,
-    pub width: u32,
-    pub height: u32,
-}
 
 pub async fn handle_sdxl_service(sdxl_request: SDXLJobRequest) {
     // Assuming CONFIG.sdxl.normal is a valid URL

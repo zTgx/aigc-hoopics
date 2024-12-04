@@ -1,8 +1,8 @@
 use crate::middleware::auth::User;
+use primitives::JobStatusReq;
 use sdxl::handle_job_status;
 use warp::http::StatusCode;
 use warp::reply::Reply;
-use worker::job::JobStatusReq;
 
 type JobStatusRequest = JobStatusReq;
 

@@ -1064,6 +1064,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "primitives"
+version = "0.1.0"
+dependencies = [
+ "inspector",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.92"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1231,6 +1240,7 @@ version = "0.1.0"
 dependencies = [
  "async_once",
  "config",
+ "primitives",
  "reqwest",
  "serde",
  "serde_json",
@@ -1309,6 +1319,7 @@ version = "0.1.0"
 dependencies = [
  "inspector",
  "ollama",
+ "primitives",
  "sdxl",
  "serde",
  "serde_json",
@@ -2074,6 +2085,7 @@ dependencies = [
  "async_once",
  "inspector",
  "lazy_static",
+ "primitives",
  "sdxl",
  "serde",
  "serde_json",

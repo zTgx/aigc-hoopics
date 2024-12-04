@@ -1,9 +1,9 @@
-pub mod job;
 pub mod queue;
 
-use job::Job;
+use primitives::sdxl::SDXLJobRequest;
+use primitives::Job;
 use queue::JobQueue;
-use sdxl::{handle_sdxl_service, SDXLJobRequest};
+use sdxl::handle_sdxl_service;
 use tokio::sync::{mpsc, OnceCell}; // Import mpsc for channels
 
 pub struct Worker {

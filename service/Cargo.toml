@@ -12,6 +12,7 @@ ollama = { path = "../ollama" }
 worker = { path = "../worker" }
 inspector = { path = "../inspector" }
 sdxl = { path = "../sdxl" }
+primitives = { path = "../primitives" }
 
 [dependencies.uuid]
 version = "1.11.0"

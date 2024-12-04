@@ -1,5 +1,7 @@
+pub mod sdxl;
+
+use crate::sdxl::SDXLJobRequest;
 use inspector::Inspector;
-use sdxl::SDXLJobRequest;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

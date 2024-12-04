@@ -1,11 +1,11 @@
 use crate::middleware::auth::User;
 use inspector::Inspector;
+use primitives::{Job, JobParams};
 use serde::Serialize;
 use uuid::Uuid;
 use warp::http::StatusCode;
 use warp::reply::Reply;
 use worker::add_job;
-use worker::job::{Job, JobParams};
 
 pub type JobRequest = JobParams;
 
