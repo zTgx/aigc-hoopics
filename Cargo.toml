@@ -7,6 +7,6 @@ members = [
     "psql", 
     "service", 
     "worker"
-, "sdxl", "constant", "primitives", "dispatcher"]
+, "sdxl", "primitives", "dispatcher"]
 resolver = "2"
 
