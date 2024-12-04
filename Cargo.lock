@@ -217,6 +217,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "dispatcher"
+version = "0.1.0"
+dependencies = [
+ "primitives",
+ "sdxl",
+]
+
+[[package]]
 name = "displaydoc"
 version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1070,6 +1078,7 @@ dependencies = [
  "inspector",
  "serde",
  "serde_json",
+ "uuid",
 ]
 
 [[package]]
@@ -1324,7 +1333,6 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
- "uuid",
  "warp",
  "worker",
 ]
@@ -2083,6 +2091,7 @@ name = "worker"
 version = "0.1.0"
 dependencies = [
  "async_once",
+ "dispatcher",
  "inspector",
  "lazy_static",
  "primitives",

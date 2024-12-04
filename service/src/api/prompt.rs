@@ -1,24 +1,15 @@
 use crate::error::ServiceError;
 use crate::middleware::auth::User;
 use ollama::Llama;
-use serde::{Deserialize, Serialize};
-
-// Define your structs
-#[derive(Debug, Deserialize, Serialize)]
-pub struct PromptRequest {
-    pub prompt: String, // 用户输入的prompt
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct PromptResponse {
-    pub original_prompt: String, // 用户自己写的prompt
-    pub updated_prompt: String,  // 经过ollama处理后的prompt
-}
+use primitives::ollama::{PromptRequest, PromptResponse};
+use inspector::Inspector;
 
 pub async fn handle_request(
     _user: User,
     request: PromptRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
+    request.inspect().unwrap();
+
     let ollama = Llama::new();
 
     // Attempt to get the updated prompt and handle potential errors

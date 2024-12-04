@@ -1,6 +1,5 @@
-use tokio::sync::mpsc; // Use Tokio's async Mutex and mpsc channel
-
 use primitives::Job;
+use tokio::sync::mpsc; // Use Tokio's async Mutex and mpsc channel
 
 pub struct JobQueue {
     pub sender: mpsc::Sender<Job>, // Channel sender for submitting jobs

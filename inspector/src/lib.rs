@@ -1,3 +1,3 @@
 pub trait Inspector {
-    fn inspect(&self) -> bool;
+    fn inspect(&self) -> Result<bool, String>;
 }

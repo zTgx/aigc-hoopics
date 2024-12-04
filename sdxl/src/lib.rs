@@ -1,10 +1,12 @@
 use config::CONFIG;
-use primitives::sdxl::SDXLJobRequest;
+use primitives::{sdxl::SDXLJobRequest, Job};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
 
-pub async fn handle_sdxl_service(sdxl_request: SDXLJobRequest) {
+pub async fn handle_sdxl_service(job: Job) {
+    let data: SDXLJobRequest = job.into();
+    
     // Assuming CONFIG.sdxl.normal is a valid URL
     let link = format!("{}/txt2img", CONFIG.sdxl.normal);
 
@@ -15,7 +17,7 @@ pub async fn handle_sdxl_service(sdxl_request: SDXLJobRequest) {
     let response = client
         .post(&link)
         .header("Content-Type", "application/json")
-        .json(&sdxl_request) // Automatically serializes the struct to JSON
+        .json(&data) // Automatically serializes the struct to JSON
         .timeout(Duration::from_secs(6)) // Set timeout
         .send() // This is now an asynchronous call
         .await // Await the response

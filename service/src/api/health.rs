@@ -1,11 +1,5 @@
-use serde::Serialize;
 use warp::reply::Reply;
-
-// Define a struct for the health check response
-#[derive(Serialize)]
-struct HealthCheckResponse {
-    status: String,
-}
+use primitives::health::HealthCheckResponse;
 
 pub fn handle_request() -> impl Reply {
     // Create a response object

@@ -1,32 +1,18 @@
 use crate::middleware::auth::User;
 use inspector::Inspector;
-use primitives::{Job, JobParams};
-use serde::Serialize;
-use uuid::Uuid;
+use primitives::job_req::{JobParams, JobResponse};
 use warp::http::StatusCode;
 use warp::reply::Reply;
 use worker::add_job;
 
-pub type JobRequest = JobParams;
-
-#[derive(Debug, Serialize)]
-pub struct JobResponse {
-    pub message: String,
-}
-
 pub async fn handle_request(
     _user: User,
-    job_params: JobRequest,
+    job_params: JobParams,
 ) -> Result<impl Reply, warp::Rejection> {
-    job_params.inspect();
-    let job = Job::new(Uuid::new_v4().to_string(), job_params);
+    job_params.inspect().unwrap();
 
-    println!("Receive job: {:?}", job);
+    add_job(job_params.into()).await;
 
-    // 直接发给Worker立马返回
-    add_job(job).await;
-
-    // Create a response object
     let response = JobResponse {
         message: "Job submitted to Job Pool".to_string(),
     };

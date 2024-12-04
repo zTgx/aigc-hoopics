@@ -1,0 +1,8 @@
+[package]
+name = "dispatcher"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+primitives = { path = "../primitives" }
+sdxl = { path = "../sdxl" }
