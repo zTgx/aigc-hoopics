@@ -1,36 +1,21 @@
 use crate::middleware::auth::User;
-use serde::{Deserialize, Serialize};
+use sdxl::handle_job_status;
 use warp::http::StatusCode;
 use warp::reply::Reply;
+use worker::job::JobStatusReq;
 
-// Define a struct for the incoming job IDs
-#[derive(Debug, Deserialize, Serialize)]
-pub struct JobStatusRequest {
-    pub job_ids: Vec<String>, // Expecting an array of strings
-}
-
-// Define a struct for the response
-#[derive(Debug, Serialize)]
-pub struct JobStatusResponse {
-    pub message: String,
-}
+type JobStatusRequest = JobStatusReq;
 
 // Handle the request for job status
 pub async fn handle_request(
     _user: User,
     request: JobStatusRequest,
 ) -> Result<impl Reply, warp::Rejection> {
-    // Process the incoming JSON data (job_ids)
-    let response_message = format!("Received job IDs: {:?}", request.job_ids);
-
-    // Create a response object
-    let response = JobStatusResponse {
-        message: response_message,
-    };
+    let status = handle_job_status(request.job_ids).await;
 
     // Return the JSON response with a 200 OK status
     Ok(warp::reply::with_status(
-        warp::reply::json(&response),
+        warp::reply::json(&status),
         StatusCode::OK,
     ))
 }
