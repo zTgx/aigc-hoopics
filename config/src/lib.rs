@@ -10,6 +10,7 @@ pub struct Config {
     pub postgres: PsqlConfig,
     pub sdxl: SDXLConfig,
     pub flux: FluxConfig,
+    pub refresher: RefresherConfig,
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -63,6 +64,13 @@ pub struct FluxConfig {
     pub normal: String,
 }
 
+#[derive(Deserialize, Debug, Clone)]
+pub struct RefresherConfig {
+    pub sdxl_interval: String,
+    pub flux_interval: String,
+}
+
+
 // 全局静态配置变量
 lazy_static! {
     pub static ref CONFIG: Config = load_config("config.toml").expect("Failed to load config");
@@ -89,6 +97,8 @@ pub fn get(section: &str) -> Option<&'static dyn std::fmt::Debug> {
         "postgres" => Some(&CONFIG.postgres),
         "sdxl" => Some(&CONFIG.sdxl),
         "flux" => Some(&CONFIG.flux),
+        "refresher" => Some(&CONFIG.refresher),
+        
         _ => None,
     }
 }
