@@ -5,3 +5,6 @@ edition = "2021"
 
 [dependencies]
 service = { path = "../service" }
+refresher = { path = "../refresher" }
+tokio = { version = "1", features = ["full"] }
+

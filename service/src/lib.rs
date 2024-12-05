@@ -5,7 +5,7 @@ pub mod routes;
 
 use routes::api_routes;
 
-#[tokio::main]
+// #[tokio::main]
 pub async fn start() {
     // Combine all routes for v1 and v2
     let api_routes = api_routes();

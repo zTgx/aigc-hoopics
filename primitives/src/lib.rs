@@ -6,7 +6,7 @@ pub mod sdxl;
 
 use job_req::JobParams;
 use serde::{Deserialize, Serialize};
-use serde_repr::{Serialize_repr, Deserialize_repr};
+use serde_repr::{Deserialize_repr, Serialize_repr};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Job {
@@ -55,16 +55,18 @@ mod tests {
     fn test_deserialize_job_type() {
         let json_data_txt2img = r#"{ "job_type": 0 }"#;
         let json_data_img2img = r#"{ "job_type": 1 }"#;
-    
+
         #[derive(Debug, Serialize, Deserialize)]
         struct JobParamsWrapper {
             job_type: JobType,
         }
-    
+
         // Deserialize JobType from JSON
-        let job_params_txt2img: JobParamsWrapper = serde_json::from_str(json_data_txt2img).expect("Failed to deserialize");
-        let job_params_img2img: JobParamsWrapper = serde_json::from_str(json_data_img2img).expect("Failed to deserialize");
-    
+        let job_params_txt2img: JobParamsWrapper =
+            serde_json::from_str(json_data_txt2img).expect("Failed to deserialize");
+        let job_params_img2img: JobParamsWrapper =
+            serde_json::from_str(json_data_img2img).expect("Failed to deserialize");
+
         // Assertions
         assert_eq!(job_params_txt2img.job_type, JobType::Txt2Img);
         assert_eq!(job_params_img2img.job_type, JobType::Img2Img);
@@ -82,8 +84,10 @@ mod tests {
         }
 
         // Deserialize ModelType from JSON
-        let model_params_sdxl: ModelParamsWrapper = serde_json::from_str(json_data_sdxl).expect("Failed to deserialize");
-        let model_params_flux: ModelParamsWrapper = serde_json::from_str(json_data_flux).expect("Failed to deserialize");
+        let model_params_sdxl: ModelParamsWrapper =
+            serde_json::from_str(json_data_sdxl).expect("Failed to deserialize");
+        let model_params_flux: ModelParamsWrapper =
+            serde_json::from_str(json_data_flux).expect("Failed to deserialize");
 
         // Assertions
         assert_eq!(model_params_sdxl.model, ModelType::SDXL);

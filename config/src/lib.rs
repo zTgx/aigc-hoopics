@@ -66,10 +66,9 @@ pub struct FluxConfig {
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct RefresherConfig {
-    pub sdxl_interval: String,
-    pub flux_interval: String,
+    pub sdxl_interval: u8,
+    pub flux_interval: u8,
 }
-
 
 // 全局静态配置变量
 lazy_static! {
@@ -98,7 +97,7 @@ pub fn get(section: &str) -> Option<&'static dyn std::fmt::Debug> {
         "sdxl" => Some(&CONFIG.sdxl),
         "flux" => Some(&CONFIG.flux),
         "refresher" => Some(&CONFIG.refresher),
-        
+
         _ => None,
     }
 }

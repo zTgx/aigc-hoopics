@@ -441,7 +441,9 @@ dependencies = [
 name = "hoopics"
 version = "0.1.0"
 dependencies = [
+ "refresher",
  "service",
+ "tokio",
 ]
 
 [[package]]
@@ -1148,6 +1150,13 @@ dependencies = [
 [[package]]
 name = "refresher"
 version = "0.1.0"
+dependencies = [
+ "inspector",
+ "lazy_static",
+ "serde",
+ "serde_json",
+ "tokio",
+]
 
 [[package]]
 name = "reqwest"
@@ -1344,7 +1353,6 @@ dependencies = [
  "sdxl",
  "serde",
  "serde_json",
- "tokio",
  "warp",
  "worker",
 ]

@@ -13,8 +13,8 @@ pub struct JobParams {
     pub description: String,
     pub job_style: String,
     pub model: ModelType, // Assuming ModelType is defined as an enum or struct
-    pub width: u32,  // Assuming width is an unsigned integer
-    pub height: u32, // Assuming height is an unsigned integer
+    pub width: u32,       // Assuming width is an unsigned integer
+    pub height: u32,      // Assuming height is an unsigned integer
     pub rewrite_prompt: bool,
 }
 
