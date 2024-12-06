@@ -7,6 +7,12 @@ pub struct JobStatusReq {
     pub job_ids: Vec<String>, // Expecting an array of strings
 }
 
+impl From<Vec<String>> for JobStatusReq {
+    fn from(job_ids: Vec<String>) -> Self {
+        JobStatusReq { job_ids }
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JobResult {
     pub file_urls: Vec<String>, // A vector to hold multiple file URLs

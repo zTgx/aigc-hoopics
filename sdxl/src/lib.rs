@@ -8,6 +8,7 @@ use reqwest::Client;
 use serde::Serialize;
 use std::time::Duration;
 
+#[derive(Clone)]
 pub struct SDXLClient {
     client: Client,
 }
@@ -73,33 +74,31 @@ impl SDXLClient {
     }
 }
 
-pub async fn handle_job_status(job_ids: Vec<String>) -> Vec<JobResult> {
-    // Assuming CONFIG.sdxl.normal is a valid URL
-    let link = format!("{}/get_task_status_batch", CONFIG.sdxl.normal);
+impl SDXLClient {
+    pub async fn handle_job_status(
+        &self,
+        request: JobStatusReq,
+    ) -> Result<Vec<JobResult>, reqwest::Error> {
+        let link = format!("{}/get_task_status_batch", CONFIG.sdxl.normal);
 
-    let data = JobStatusReq { job_ids };
+        // Send the POST request asynchronously
+        let response = self
+            .client
+            .post(&link)
+            .header("Content-Type", "application/json")
+            .json(&request) // Automatically serializes the struct to JSON
+            .timeout(Duration::from_secs(6)) // Set timeout
+            .send() // This is now an asynchronous call
+            .await // Await the response
+            .unwrap(); // Handle errors appropriately in production code
 
-    // Create a new HTTP client
-    let client = Client::new();
+        // Check if the response was successful
+        if response.status().is_success() {
+            println!("Job request sent successfully!");
+        } else {
+            eprintln!("Failed to send job request: {}", response.status());
+        }
 
-    // Send the POST request asynchronously
-    let response = client
-        .post(&link)
-        .header("Content-Type", "application/json")
-        .json(&data) // Automatically serializes the struct to JSON
-        .timeout(Duration::from_secs(6)) // Set timeout
-        .send() // This is now an asynchronous call
-        .await // Await the response
-        .unwrap(); // Handle errors appropriately in production code
-
-    // Check if the response was successful
-    if response.status().is_success() {
-        println!("Job request sent successfully!");
-    } else {
-        eprintln!("Failed to send job request: {}", response.status());
+        response.json::<Vec<JobResult>>().await
     }
-
-    let res = response.json::<Vec<JobResult>>().await;
-
-    res.unwrap()
 }

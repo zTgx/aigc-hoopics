@@ -1,5 +1,6 @@
 use config::CONFIG;
 use postgres::{Client, Error, NoTls, Row};
+use primitives::ModelType;
 
 #[macro_export]
 macro_rules! create_connection_postgres_string {
@@ -47,5 +48,11 @@ impl EngineOp for Engine {
         }
 
         todo!()
+    }
+}
+
+impl Engine {
+    pub fn fetch_pending_or_processing_job_ids(_model_type: ModelType) -> Vec<String> {
+        vec!["cf628bc0-c15f-4966-aab6-f0c3e8bd2b57".to_string()]
     }
 }

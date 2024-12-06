@@ -8,3 +8,4 @@ config = { path = "../config" }
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", features = ["serde"] }
 postgres = "0.19.9"
+primitives = { path = "../primitives" }

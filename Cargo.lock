@@ -152,6 +152,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "colored"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cbf2150cce219b664a8a70df7a1f933836724b503f8a413af9365b4dcc4d90b8"
+dependencies = [
+ "lazy_static",
+ "windows-sys 0.48.0",
+]
+
+[[package]]
 name = "config"
 version = "0.1.0"
 dependencies = [
@@ -217,6 +227,7 @@ name = "dispatcher"
 version = "0.1.0"
 dependencies = [
  "primitives",
+ "reqwest",
  "sdxl",
 ]
 
@@ -1096,6 +1107,7 @@ dependencies = [
  "chrono",
  "config",
  "postgres",
+ "primitives",
  "serde",
 ]
 
@@ -1151,8 +1163,12 @@ dependencies = [
 name = "refresher"
 version = "0.1.0"
 dependencies = [
+ "colored",
+ "dispatcher",
  "inspector",
  "lazy_static",
+ "primitives",
+ "psql",
  "serde",
  "serde_json",
  "tokio",
@@ -1347,6 +1363,7 @@ dependencies = [
 name = "service"
 version = "0.1.0"
 dependencies = [
+ "dispatcher",
  "inspector",
  "ollama",
  "primitives",

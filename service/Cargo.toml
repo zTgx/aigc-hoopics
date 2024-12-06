@@ -12,3 +12,4 @@ worker = { path = "../worker" }
 inspector = { path = "../inspector" }
 sdxl = { path = "../sdxl" }
 primitives = { path = "../primitives" }
+dispatcher = { path = "../dispatcher" }
