@@ -59,5 +59,7 @@ impl Engine {
 
 impl Engine {
     // save job to hjobs table
-    pub fn save_job(&mut self, job: &Job) {}
+    pub fn save_job(&mut self, job: &Job) {
+        
+    }
 }
