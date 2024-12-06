@@ -1,4 +1,4 @@
-use crate::{Job, JobType, ModelType}; // Assuming these are defined elsewhere in your crate
+use crate::{Job, JobStyle, JobType, ModelType, Priority}; // Assuming these are defined elsewhere in your crate
 use inspector::Inspector;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -9,12 +9,12 @@ pub struct JobParams {
     pub negative_prompt: String,
     pub job_type: JobType,
     pub img_link: String,
-    pub priority: i32, // Assuming priority is an integer
+    pub priority: Priority,
     pub description: String,
-    pub job_style: String,
-    pub model: ModelType, // Assuming ModelType is defined as an enum or struct
-    pub width: u32,       // Assuming width is an unsigned integer
-    pub height: u32,      // Assuming height is an unsigned integer
+    pub job_style: JobStyle,
+    pub model: ModelType,
+    pub width: u16,
+    pub height: u16,
     pub rewrite_prompt: bool,
 }
 
@@ -54,7 +54,7 @@ mod tests {
             "img_link": "http://example.com/image.png",
             "priority": 1,
             "description": "A job for generating images.",
-            "job_style": "realistic",
+            "job_style": 0,
             "model": 0,
             "width": 512,
             "height": 512,
@@ -70,9 +70,9 @@ mod tests {
         assert_eq!(job_params.negative_prompt, "blurry");
         assert_eq!(job_params.job_type, JobType::Txt2Img); // Ensure this matches the enum definition
         assert_eq!(job_params.img_link, "http://example.com/image.png");
-        assert_eq!(job_params.priority, 1);
+        assert_eq!(job_params.priority, Priority::Low);
         assert_eq!(job_params.description, "A job for generating images.");
-        assert_eq!(job_params.job_style, "realistic");
+        assert_eq!(job_params.job_style, JobStyle::Normal);
         assert_eq!(job_params.model, ModelType::SDXL); // Ensure this matches the enum or struct definition
         assert_eq!(job_params.width, 512);
         assert_eq!(job_params.height, 512);

@@ -6,7 +6,11 @@ members = [
     "ollama",
     "psql", 
     "service", 
-    "worker"
-, "sdxl", "primitives", "dispatcher", "refresher"]
+    "worker", 
+    "sdxl", 
+    "primitives", 
+    "dispatcher", 
+    "refresher"
+]
 resolver = "2"
 

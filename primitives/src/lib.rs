@@ -46,6 +46,25 @@ impl ToString for ModelType {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize_repr, Deserialize_repr)]
+#[repr(u8)]
+pub enum Priority {
+    VeryLow = 0,
+    Low = 1,
+    Medium = 2,
+    High = 3,
+    VeryHigh = 4,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize_repr, Deserialize_repr)]
+#[repr(u8)]
+pub enum JobStyle {
+    Normal = 0,
+    Cartoon = 1,
+    Cyberpunk = 2,
+    Film = 3,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

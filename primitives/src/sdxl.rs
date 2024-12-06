@@ -1,15 +1,15 @@
 use serde::{Deserialize, Serialize};
 
-use crate::Job;
+use crate::{Job, JobStyle, ModelType};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SDXLJobRequest {
     pub prompt: String,
     pub job_id: String,
-    pub style: String,
-    pub model_type: String,
-    pub width: u32,
-    pub height: u32,
+    pub style: JobStyle,
+    pub model_type: ModelType,
+    pub width: u16,
+    pub height: u16,
 }
 
 impl From<Job> for SDXLJobRequest {
@@ -18,7 +18,7 @@ impl From<Job> for SDXLJobRequest {
             prompt: item.params.prompt,
             job_id: item.id,
             style: item.params.job_style,
-            model_type: item.params.model.to_string(),
+            model_type: item.params.model,
             width: item.params.width,
             height: item.params.height,
         }
@@ -30,8 +30,8 @@ pub struct Img2ImgRequest {
     prompt: String,
     job_id: String,
     img_url: String,
-    style: String,
-    model_type: String,
+    style: JobStyle,
+    model_type: ModelType,
 }
 
 impl From<Job> for Img2ImgRequest {
@@ -40,7 +40,7 @@ impl From<Job> for Img2ImgRequest {
             prompt: item.params.prompt,
             job_id: item.id,
             style: item.params.job_style,
-            model_type: item.params.model.to_string(),
+            model_type: item.params.model,
             img_url: item.params.img_link,
         }
     }
