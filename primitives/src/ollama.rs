@@ -1,3 +1,4 @@
+use config::CONFIG;
 use inspector::Inspector;
 use serde::{Deserialize, Serialize};
 
@@ -8,6 +9,16 @@ pub struct PromptRequest {
 
 impl Inspector for PromptRequest {
     fn inspect(&self) -> Result<bool, String> {
+        let checkpoints = &CONFIG.checkpoints;
+
+        // Check prompt length
+        if self.prompt.len() > checkpoints.max_length_prompt {
+            return Err(format!(
+                "Prompt length exceeds maximum of 1500 characters. Current length: {}",
+                self.prompt.len()
+            ));
+        }
+
         Ok(true)
     }
 }

@@ -3,12 +3,16 @@ use crate::middleware::auth::User;
 use inspector::Inspector;
 use ollama::Llama;
 use primitives::ollama::{PromptRequest, PromptResponse};
+use std::convert::Infallible;
 
 pub async fn handle_request(
     _user: User,
     request: PromptRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    request.inspect().unwrap();
+    if let Err(e) = request.inspect() {
+        let reject = warp::reject::custom(ValidationError(e));
+        return Err(reject);
+    }
 
     let ollama = Llama::new();
 
@@ -30,12 +34,21 @@ pub async fn handle_request(
     Ok(warp::reply::json(&prompt_response))
 }
 
-// pub async fn handle_rejection(err: warp::Rejection) -> Result<impl Reply, std::convert::Infallible> {
-//     if let Some(app_error) = err.find::<ServiceError>() {
-//         return Ok(warp::reply::with_status(app_error.reason.clone(), warp::http::StatusCode::BAD_REQUEST));
-//     }
+#[derive(Debug)]
+struct ValidationError(String);
+impl warp::reject::Reject for ValidationError {}
 
-//     // Handle other types of rejections (e.g., not found)
-//     eprintln!("Unhandled rejection: {:?}", err);
-//     Ok(warp::reply::with_status("INTERNAL_SERVER_ERROR".to_string(), warp::http::StatusCode::INTERNAL_SERVER_ERROR))
-// }
+// Add this function to handle the custom rejection
+pub async fn handle_rejection(err: warp::Rejection) -> Result<impl warp::Reply, Infallible> {
+    if let Some(ValidationError(msg)) = err.find() {
+        Ok(warp::reply::with_status(
+            warp::reply::json(&msg),
+            warp::http::StatusCode::BAD_REQUEST,
+        ))
+    } else {
+        Ok(warp::reply::with_status(
+            warp::reply::json(&"Internal server error"),
+            warp::http::StatusCode::INTERNAL_SERVER_ERROR,
+        ))
+    }
+}

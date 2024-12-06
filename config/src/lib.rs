@@ -4,16 +4,6 @@ use std::fmt;
 use std::{fs, path::PathBuf};
 
 #[derive(Deserialize, Debug, Clone)]
-pub struct Config {
-    pub ollama: OllamaConfig,
-    pub hoopics: HoopicsConfig,
-    pub postgres: PsqlConfig,
-    pub sdxl: SDXLConfig,
-    pub flux: FluxConfig,
-    pub refresher: RefresherConfig,
-}
-
-#[derive(Deserialize, Debug, Clone)]
 pub struct OllamaConfig {
     pub model: String,
     pub url: String,
@@ -68,6 +58,29 @@ pub struct FluxConfig {
 pub struct RefresherConfig {
     pub sdxl_interval: u8,
     pub flux_interval: u8,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct CheckpointsConfig {
+    pub max_length_prompt: usize,
+    pub max_length_negative_prompt: usize,
+    pub max_length_description: usize,
+    pub max_length_img_link: usize,
+    pub max_image_width: u16,
+    pub min_image_width: u16,
+    pub max_image_height: u16,
+    pub min_image_height: u16,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct Config {
+    pub ollama: OllamaConfig,
+    pub hoopics: HoopicsConfig,
+    pub postgres: PsqlConfig,
+    pub sdxl: SDXLConfig,
+    pub flux: FluxConfig,
+    pub refresher: RefresherConfig,
+    pub checkpoints: CheckpointsConfig,
 }
 
 // 全局静态配置变量

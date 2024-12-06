@@ -51,8 +51,6 @@ impl Llama {
     pub async fn prompt(&self, prompt: &str) -> Result<String, Box<dyn Error>> {
         let post_data = PostData::new(&CONFIG.ollama.model, prompt);
 
-        println!("post_data: {:?}", post_data);
-
         let resp = self
             .client
             .post(CONFIG.ollama.url.clone())
@@ -61,8 +59,6 @@ impl Llama {
             .await?;
 
         let llama_resp: LlamaPromptResp = resp.json().await?;
-        println!("resp: {:?}", llama_resp);
-
         if !llama_resp.done {
             return Err("Llama response is not done".into());
         }

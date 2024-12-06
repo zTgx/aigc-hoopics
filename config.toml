@@ -23,3 +23,13 @@ normal = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
 [refresher]
 sdxl_interval = 15 # sdxl 速度快
 flux_interval = 30 # flux 速度慢
+
+[checkpoints]
+max_length_prompt = 1500
+max_length_negative_prompt = 200
+max_length_description = 200
+max_length_img_link = 256
+max_image_width = 1024
+min_image_width = 1
+max_image_height = 1024
+min_image_height = 1

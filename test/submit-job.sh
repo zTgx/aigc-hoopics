@@ -8,7 +8,7 @@ curl -X POST http://localhost:3030/v1/submit-job \
     "img_link": "",
     "priority": 1,
     "description": "",
-    "job_style": "normal",
+    "job_style": 0,
     "model": 0,
     "width": 1024,
     "height": 1024,

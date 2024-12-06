@@ -1,4 +1,6 @@
-use crate::{Job, JobStyle, JobType, ModelType, Priority}; // Assuming these are defined elsewhere in your crate
+use crate::{Job, JobStyle, JobType, ModelType, Priority};
+use config::CONFIG;
+// Assuming these are defined elsewhere in your crate
 use inspector::Inspector;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -29,7 +31,58 @@ impl From<JobParams> for Job {
 
 impl Inspector for JobParams {
     fn inspect(&self) -> Result<bool, String> {
-        // Implement your inspection logic here if needed
+        let checkpoints = &CONFIG.checkpoints;
+
+        // Check prompt length
+        if self.prompt.len() > checkpoints.max_length_prompt {
+            return Err(format!(
+                "Prompt length exceeds maximum of 1500 characters. Current length: {}",
+                self.prompt.len()
+            ));
+        }
+
+        // Check negative prompt length
+        if self.negative_prompt.len() > checkpoints.max_length_negative_prompt {
+            return Err(format!(
+                "Negative prompt length exceeds maximum of 200 characters. Current length: {}",
+                self.negative_prompt.len()
+            ));
+        }
+
+        // Check description length
+        if self.description.len() > checkpoints.max_length_description {
+            return Err(format!(
+                "Description length exceeds maximum of 200 characters. Current length: {}",
+                self.description.len()
+            ));
+        }
+
+        // Check img_link length
+        if self.img_link.len() > checkpoints.max_length_img_link {
+            return Err(format!(
+                "Image link length exceeds maximum of 256 characters. Current length: {}",
+                self.img_link.len()
+            ));
+        }
+
+        // Check image width
+        if self.width < checkpoints.min_image_width || self.width > checkpoints.max_image_width {
+            return Err(format!(
+                "Image width must be between 1 and 1024. Current width: {}",
+                self.width
+            ));
+        }
+
+        // Check image height
+        if self.height < checkpoints.min_image_height || self.height > checkpoints.max_image_height
+        {
+            return Err(format!(
+                "Image height must be between 1 and 1024. Current height: {}",
+                self.height
+            ));
+        }
+
+        // If all checks pass, return Ok(true)
         Ok(true)
     }
 }
