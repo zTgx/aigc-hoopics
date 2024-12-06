@@ -13,15 +13,12 @@ impl Worker {
     fn start(&self, mut receiver: mpsc::Receiver<Job>) {
         // Start processing jobs in a separate task
         tokio::spawn(async move {
-            println!("Starting job processing...");
-
             let dispatcher = Dispatcher::new();
             while let Some(job) = receiver.recv().await {
                 // Process each job received from the channel
                 println!("Processing job: {:?}", job);
 
                 // Here you would call your job processing logic
-                // dispatch(job).await;
                 dispatcher.dispatch(job).await;
             }
         });

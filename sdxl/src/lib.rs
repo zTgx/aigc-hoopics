@@ -21,11 +21,11 @@ impl SDXLClient {
     }
 
     pub async fn handle(&self, job: Job) {
-        if job.params.job_type == JobType::Txt2Img {
+        if job.job_type == JobType::Txt2Img {
             return self.handle_txt_2_img(job).await;
         }
 
-        if job.params.job_type == JobType::Img2Img {
+        if job.job_type == JobType::Img2Img {
             return self.handle_img_2_img(job).await;
         }
     }

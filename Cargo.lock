@@ -1089,7 +1089,6 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_repr",
- "uuid",
 ]
 
 [[package]]
@@ -1368,9 +1367,11 @@ dependencies = [
  "inspector",
  "ollama",
  "primitives",
+ "psql",
  "sdxl",
  "serde",
  "serde_json",
+ "uuid",
  "warp",
  "worker",
 ]

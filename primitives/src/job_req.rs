@@ -1,9 +1,8 @@
-use crate::{Job, JobStyle, JobType, ModelType, Priority};
+use crate::{JobStyle, JobType, ModelType, Priority};
 use config::CONFIG;
 // Assuming these are defined elsewhere in your crate
 use inspector::Inspector;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JobParams {
@@ -18,15 +17,6 @@ pub struct JobParams {
     pub width: u16,
     pub height: u16,
     pub rewrite_prompt: bool,
-}
-
-impl From<JobParams> for Job {
-    fn from(params: JobParams) -> Self {
-        Job {
-            id: Uuid::new_v4().to_string(),
-            params,
-        }
-    }
 }
 
 impl Inspector for JobParams {
@@ -80,6 +70,19 @@ impl Inspector for JobParams {
                 "Image height must be between 1 and 1024. Current height: {}",
                 self.height
             ));
+        }
+
+        match self.job_type {
+            JobType::Txt2Img => {
+                if !self.img_link.is_empty() {
+                    return Err("img_link should be empty for Txt2Img jobs".to_string());
+                }
+            }
+            JobType::Img2Img => {
+                if self.img_link.is_empty() {
+                    return Err("img_link is required for Img2Img jobs".to_string());
+                }
+            }
         }
 
         // If all checks pass, return Ok(true)

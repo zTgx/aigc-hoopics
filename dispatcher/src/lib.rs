@@ -21,7 +21,7 @@ impl Dispatcher {
 
 impl Dispatcher {
     pub async fn dispatch(&self, job: Job) {
-        if job.params.model == job.params.model {
+        if job.model == job.model {
             return self.sdxl.handle(job).await;
         }
     }

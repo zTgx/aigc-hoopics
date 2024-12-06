@@ -4,14 +4,23 @@ pub mod job_status;
 pub mod ollama;
 pub mod sdxl;
 
-use job_req::JobParams;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Job {
-    id: String,
-    pub params: JobParams,
+    pub id: String,
+    pub prompt: String,
+    pub negative_prompt: String,
+    pub job_type: JobType,
+    pub img_link: String,
+    pub priority: Priority,
+    pub description: String,
+    pub job_style: JobStyle,
+    pub model: ModelType,
+    pub width: u16,
+    pub height: u16,
+    pub rewrite_prompt: bool,
 }
 
 #[derive(Debug, Serialize_repr, Deserialize_repr, Clone, PartialEq)]

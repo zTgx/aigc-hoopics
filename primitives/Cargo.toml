@@ -9,9 +9,3 @@ serde_json = "1.0"
 inspector = { path = "../inspector" }
 serde_repr = "0.1.19"
 config = { path = "../config" }
-
-[dependencies.uuid]
-version = "1.11.0"
-features = [
-    "v4",                # Lets you generate random UUIDs
-]

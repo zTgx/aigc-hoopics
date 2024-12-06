@@ -15,12 +15,12 @@ pub struct SDXLJobRequest {
 impl From<Job> for SDXLJobRequest {
     fn from(item: Job) -> Self {
         SDXLJobRequest {
-            prompt: item.params.prompt,
+            prompt: item.prompt,
             job_id: item.id,
-            style: item.params.job_style,
-            model_type: item.params.model,
-            width: item.params.width,
-            height: item.params.height,
+            style: item.job_style,
+            model_type: item.model,
+            width: item.width,
+            height: item.height,
         }
     }
 }
@@ -37,11 +37,11 @@ pub struct Img2ImgRequest {
 impl From<Job> for Img2ImgRequest {
     fn from(item: Job) -> Self {
         Img2ImgRequest {
-            prompt: item.params.prompt,
+            prompt: item.prompt,
             job_id: item.id,
-            style: item.params.job_style,
-            model_type: item.params.model,
-            img_url: item.params.img_link,
+            style: item.job_style,
+            model_type: item.model,
+            img_url: item.img_link,
         }
     }
 }
