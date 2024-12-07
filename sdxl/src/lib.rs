@@ -3,7 +3,7 @@ use config::CONFIG;
 use primitives::{
     job_status::{JobResult, JobStatusReq},
     sdxl::{Img2ImgRequest, SDXLJobRequest},
-    Job, JobType,
+    select_sdxl_config, Job, JobType,
 };
 use reqwest::{Client, Error, Response};
 use serde::Serialize;
@@ -35,18 +35,18 @@ impl SDXLClient {
 
 impl SDXLClient {
     pub async fn handle_txt_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
+        let url = format!("{}/txt2img", select_sdxl_config!(&job.job_style));
+
         let data = SDXLJobRequest::new(job);
-        println!("SDXL SDXLJobRequest: {:#?}", data);
-
-        let url = format!("{}/txt2img", CONFIG.sdxl.normal);
-
+        // println!("SDXL SDXLJobRequest: {:#?}", data);
         self.post(&data, &url).await
     }
 
     pub async fn handle_img_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
-        let data = Img2ImgRequest::new(job);
-        let url = format!("{}/img2img", CONFIG.sdxl.normal);
+        let url = format!("{}/img2img", select_sdxl_config!(&job.job_style));
 
+        let data = Img2ImgRequest::new(job);
+        // println!("SDXL Img2ImgRequest: {:#?}", data);
         self.post(&data, &url).await
     }
 }
@@ -96,7 +96,7 @@ impl SDXLClient {
 
         // Check if the response was successful
         if response.status().is_success() {
-            // println!("Job request sent successfully!");
+            println!("{}", "SDXL Job status request sent successfully!".green());
         } else {
             eprintln!("Failed to send job request: {}", response.status());
         }

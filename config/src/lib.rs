@@ -5,16 +5,16 @@ use std::{fs, path::PathBuf};
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct OllamaConfig {
-    pub model: String,
     pub url: String,
+    pub model: String,
 }
 
 impl Default for OllamaConfig {
     fn default() -> Self {
         OllamaConfig {
             url: "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443/ollama/generate"
-                .to_string(), // 自定义默认URL
-            model: "impactframes/llama3_ifai_sd_prompt_mkr_q4km".to_string(), // 自定义默认模型
+                .to_string(),
+            model: "impactframes/llama3_ifai_sd_prompt_mkr_q4km".to_string(),
         }
     }
 }
@@ -48,11 +48,17 @@ impl fmt::Display for PsqlConfig {
 #[derive(Deserialize, Debug, Clone)]
 pub struct SDXLConfig {
     pub normal: String,
+    pub cartoon: String,
+    pub cyberpunk: String,
+    pub film: String,
 }
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct FluxConfig {
     pub normal: String,
+    pub cartoon: String,
+    pub cyberpunk: String,
+    pub film: String,
 }
 
 #[derive(Deserialize, Debug, Clone)]

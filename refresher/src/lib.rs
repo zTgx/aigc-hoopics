@@ -47,7 +47,7 @@ impl Refresher {
                     match dispatcher_clone.check_status(ids.into()).await {
                         Ok(result) => {
                             if should_print_log {
-                                println!("{}\n{:#?}", "SDXL job status: ".yellow(), result);
+                                println!("{}\n{:#?}", "SDXL job status: ".green(), result);
 
                                 // # 状态更新
                                 if let Err(e) = engine.update_job_status(&result).await {
@@ -92,7 +92,7 @@ impl Refresher {
                     match dispatcher_clone.check_status(ids.into()).await {
                         Ok(result) => {
                             if should_print_log {
-                                println!("{}\n{:#?}", "SDXL job status: ".purple(), result);
+                                println!("{}\n{:#?}", "FLUX job status: ".purple(), result);
 
                                 // # 状态更新
                                 if let Err(e) = engine.update_job_status(&result).await {

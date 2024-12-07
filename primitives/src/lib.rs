@@ -97,6 +97,32 @@ impl ToString for JobStyle {
     }
 }
 
+#[macro_export]
+macro_rules! select_sdxl_config {
+    ($sdxlstyle:expr) => {{
+        use primitives::JobStyle;
+        match $sdxlstyle {
+            JobStyle::Normal => &CONFIG.sdxl.normal,
+            JobStyle::Cartoon => &CONFIG.sdxl.cartoon,
+            JobStyle::Cyberpunk => &CONFIG.sdxl.cyberpunk,
+            JobStyle::Film => &CONFIG.sdxl.film,
+        }
+    }};
+}
+
+#[macro_export]
+macro_rules! select_flux_config {
+    ($flux_style:expr) => {{
+        use primitives::JobStyle;
+        match $flux_style {
+            JobStyle::Normal => &CONFIG.flux.normal,
+            JobStyle::Cartoon => &CONFIG.flux.cartoon,
+            JobStyle::Cyberpunk => &CONFIG.flux.cyberpunk,
+            JobStyle::Film => &CONFIG.flux.film,
+        }
+    }};
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

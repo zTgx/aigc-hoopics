@@ -1,9 +1,23 @@
 use config::CONFIG;
 use primitives::{job_status::JobResult, Job, ModelType};
+use std::sync::Arc;
+use tokio::sync::Mutex;
+use tokio::sync::OnceCell;
 use tokio_postgres::{Client, Error, NoTls};
 
 pub struct Engine {
     pub client: Client,
+}
+
+pub static ENGINE: OnceCell<Arc<Mutex<Engine>>> = OnceCell::const_new();
+pub async fn get_global_engine() -> Arc<Mutex<Engine>> {
+    ENGINE
+        .get_or_init(|| async {
+            let engine = Engine::new().await;
+            Arc::new(Mutex::new(engine))
+        })
+        .await
+        .clone() // Clone the Arc to return it
 }
 
 impl Engine {

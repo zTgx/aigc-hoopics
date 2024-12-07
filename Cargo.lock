@@ -227,8 +227,10 @@ name = "dispatcher"
 version = "0.1.0"
 dependencies = [
  "primitives",
+ "psql",
  "reqwest",
  "sdxl",
+ "tokio-postgres",
 ]
 
 [[package]]

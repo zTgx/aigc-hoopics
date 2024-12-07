@@ -4,8 +4,8 @@ endpoint = "127.0.0.1"
 port = 3030
 
 [ollama]
-model = "impactframes/llama3_ifai_sd_prompt_mkr_q4km"
 url = "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443/ollama/generate"
+model = "impactframes/llama3_ifai_sd_prompt_mkr_q4km"
 
 [postgres]
 host = "127.0.0.1"
@@ -16,9 +16,15 @@ dbname = "hoopd"
 
 [sdxl]
 normal = "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443"
+cartoon = "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443"
+cyberpunk = "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443"
+film = "https://u447140-b619-b81b9121.bjb1.seetacloud.com:8443"
 
 [flux]
 normal = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
+cartoon = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
+cyberpunk = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
+film = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
 
 # 单位秒: txt2img / img2img 都需要时间，定期去SDX、FLUX上查询status
 [refresher]
