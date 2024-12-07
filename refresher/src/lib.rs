@@ -26,6 +26,11 @@ impl Refresher {
         // 启动第一个定时器，每隔5秒执行一次任务
         let dispatcher_clone = dispatcher.clone(); // 克隆 dispatcher，以便在异步任务中使用
         task::spawn(async move {
+            println!(
+                "{}",
+                "✅ The Refresher service has started working\n".green()
+            );
+
             let mut engine = Engine::new().await;
 
             let mut interval = tokio::time::interval(Duration::from_secs(sdxl_interval));
@@ -33,7 +38,7 @@ impl Refresher {
                 interval.tick().await;
 
                 if should_print_log {
-                    println!("{}", "SDXL task: Checking status...".yellow());
+                    println!("{}", "SDXL task: Checking status ...".yellow());
                 }
 
                 if let Ok(ids) = engine
@@ -47,7 +52,7 @@ impl Refresher {
                     match dispatcher_clone.check_status(ids.into()).await {
                         Ok(result) => {
                             if should_print_log {
-                                println!("{}\n{:#?}", "SDXL job status: ".green(), result);
+                                println!("{}\n{:#?}", "SDXL task status: ".green(), result);
 
                                 // # 状态更新
                                 if let Err(e) = engine.update_job_status(&result).await {
@@ -78,7 +83,7 @@ impl Refresher {
                 interval.tick().await;
 
                 if should_print_log {
-                    println!("{}", "FLUX task: Checking another status...".purple());
+                    println!("{}", "FLUX task: Checking status ...".purple());
                 }
 
                 if let Ok(ids) = engine
@@ -92,7 +97,7 @@ impl Refresher {
                     match dispatcher_clone.check_status(ids.into()).await {
                         Ok(result) => {
                             if should_print_log {
-                                println!("{}\n{:#?}", "FLUX job status: ".purple(), result);
+                                println!("{}\n{:#?}", "FLUX task status: ".purple(), result);
 
                                 // # 状态更新
                                 if let Err(e) = engine.update_job_status(&result).await {
