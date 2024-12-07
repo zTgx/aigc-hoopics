@@ -65,11 +65,9 @@ impl SDXLClient {
             .await // Await the response
             .unwrap(); // Handle errors appropriately in production code
 
-        println!("sdxl response: {:?}", response);
-
         // Check if the response was successful
         if response.status().is_success() {
-            // println!("Job request sent successfully!");
+            println!("SDXL Job request sent successfully!");
         } else {
             eprintln!("Failed to send job request: {}", response.status());
         }

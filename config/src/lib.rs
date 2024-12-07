@@ -57,8 +57,8 @@ pub struct FluxConfig {
 #[derive(Deserialize, Debug, Clone)]
 pub struct RefresherConfig {
     pub print_log: bool,
-    pub sdxl_interval: u8,
-    pub flux_interval: u8,
+    pub sdxl_interval: u64,
+    pub flux_interval: u64,
 }
 
 #[derive(Deserialize, Debug, Clone)]

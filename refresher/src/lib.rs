@@ -20,11 +20,15 @@ impl Refresher {
     pub fn start(&self) {
         let dispatcher = Dispatcher::new();
         let should_print_log = CONFIG.refresher.print_log;
+        let sdxl_interval = CONFIG.refresher.sdxl_interval;
+        let flux_interval = CONFIG.refresher.flux_interval;
 
         // 启动第一个定时器，每隔5秒执行一次任务
         let dispatcher_clone = dispatcher.clone(); // 克隆 dispatcher，以便在异步任务中使用
         task::spawn(async move {
-            let mut interval = tokio::time::interval(Duration::from_secs(5));
+            let mut engine = Engine::new().await;
+
+            let mut interval = tokio::time::interval(Duration::from_secs(sdxl_interval));
             loop {
                 interval.tick().await;
 
@@ -32,15 +36,33 @@ impl Refresher {
                     println!("{}", "SDXL task: Checking status...".yellow());
                 }
 
-                let ids = Engine::fetch_pending_or_processing_job_ids(ModelType::SDXL);
-                match dispatcher_clone.check_status(ids.into()).await {
-                    Ok(result) => {
-                        if should_print_log {
-                            println!("{}\n{:#?}", "SDXL job status: ".yellow(), result);
-                        }
+                if let Ok(ids) = engine
+                    .fetch_pending_or_processing_job_ids(ModelType::SDXL)
+                    .await
+                {
+                    if ids.len() == 0 {
+                        continue;
                     }
-                    Err(e) => {
-                        eprintln!("Error checking SDXL status: {}", e);
+
+                    match dispatcher_clone.check_status(ids.into()).await {
+                        Ok(result) => {
+                            if should_print_log {
+                                println!("{}\n{:#?}", "SDXL job status: ".yellow(), result);
+
+                                // # 状态更新
+                                if let Err(e) = engine.update_job_status(&result).await {
+                                    eprintln!("Error update job_status failed, reason: {}", e);
+                                }
+
+                                // # output_image_url 更新
+                                if let Err(e) = engine.update_output_image_url(&result).await {
+                                    eprintln!("Error update job_status failed, reason: {}", e);
+                                }
+                            }
+                        }
+                        Err(e) => {
+                            eprintln!("Error checking SDXL status: {}", e);
+                        }
                     }
                 }
             }
@@ -49,7 +71,9 @@ impl Refresher {
         // 启动第二个定时器，每隔10秒执行一次任务
         let dispatcher_clone = dispatcher.clone(); // 克隆 dispatcher，以便在异步任务中使用
         task::spawn(async move {
-            let mut interval = tokio::time::interval(Duration::from_secs(10));
+            let mut engine = Engine::new().await;
+            let mut interval = tokio::time::interval(Duration::from_secs(flux_interval));
+
             loop {
                 interval.tick().await;
 
@@ -57,15 +81,33 @@ impl Refresher {
                     println!("{}", "FLUX task: Checking another status...".purple());
                 }
 
-                let ids = Engine::fetch_pending_or_processing_job_ids(ModelType::FLUX);
-                match dispatcher_clone.check_status(ids.into()).await {
-                    Ok(result) => {
-                        if should_print_log {
-                            println!("{}\n{:#?}", "FLUX job status: ".purple(), result);
-                        }
+                if let Ok(ids) = engine
+                    .fetch_pending_or_processing_job_ids(ModelType::FLUX)
+                    .await
+                {
+                    if ids.len() == 0 {
+                        continue;
                     }
-                    Err(e) => {
-                        eprintln!("Error checking FLUX status: {}", e);
+
+                    match dispatcher_clone.check_status(ids.into()).await {
+                        Ok(result) => {
+                            if should_print_log {
+                                println!("{}\n{:#?}", "SDXL job status: ".purple(), result);
+
+                                // # 状态更新
+                                if let Err(e) = engine.update_job_status(&result).await {
+                                    eprintln!("Error update job_status failed, reason: {}", e);
+                                }
+
+                                // # output_image_url 更新
+                                if let Err(e) = engine.update_output_image_url(&result).await {
+                                    eprintln!("Error update job_status failed, reason: {}", e);
+                                }
+                            }
+                        }
+                        Err(e) => {
+                            eprintln!("Error checking SDXL status: {}", e);
+                        }
                     }
                 }
             }
