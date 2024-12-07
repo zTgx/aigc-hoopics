@@ -1,17 +1,13 @@
-# AIGC service
+# Hoopics - 通用AIGC服务
 
-* 运行
 ```shell
 cargo run
 ```
 
-* 测试
-```shell
-# test/job-status.sh
-bash +x test/job-status.sh
-```
+----
 
-
-* text2image
-* image2imge
-
+* 待实现
+- [ ] API-Key 注册管理  
+- [ ] 内容审查
+    - [ ] 图片内容审查
+    - [ ] prompt 审查
