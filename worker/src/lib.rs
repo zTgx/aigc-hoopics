@@ -15,7 +15,11 @@ pub async fn add_job(param: JobParams) {
         .await;
 
     // Submit the job to JOBMANAGER's queue
-    JOBMANAGER.get().unwrap().submit_job(param).await;
+    JOBMANAGER
+        .get()
+        .expect("JobManager working well.")
+        .submit_job(param)
+        .await;
 }
 
 async fn re_mapping_job(param: &JobParams) -> Job {
@@ -23,7 +27,10 @@ async fn re_mapping_job(param: &JobParams) -> Job {
     let updated_prompt = {
         if param.rewrite_prompt {
             let ollama = Llama::new();
-            let prompt = ollama.prompt(&param.prompt).await.unwrap();
+            let prompt = ollama
+                .prompt(&param.prompt)
+                .await
+                .expect("Ollama refined prompt!");
 
             Some(prompt)
         } else {

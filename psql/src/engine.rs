@@ -10,7 +10,7 @@ impl Engine {
     pub async fn new() -> Self {
         let (client, connection) = tokio_postgres::connect(&CONFIG.postgres.to_string(), NoTls)
             .await
-            .unwrap();
+            .expect("Postgres server is down!");
 
         // Spawn the connection on a separate task to handle it asynchronously
         tokio::spawn(async move {
@@ -58,25 +58,13 @@ impl Engine {
 impl Engine {
     pub async fn update_job_status(&mut self, job_results: &Vec<JobResult>) -> Result<(), Error> {
         for job_result in job_results {
-            // println!("[job-status] job_result: {:#?}", job_result);
+            let query = "UPDATE hjobs SET job_status = $1 WHERE job_id = $2";
 
-            if job_result.status == "success" {
-                let query = "UPDATE hjobs SET job_status = $1 WHERE job_id = $2";
-
-                // 执行更新操作
-                let _ = self
-                    .client
-                    .execute(query, &[&"success", &job_result.job_id])
-                    .await?;
-            } else if job_result.status == "not_found" {
-                let query = "UPDATE hjobs SET job_status = $1 WHERE job_id = $2";
-
-                // 执行更新操作
-                let _ = self
-                    .client
-                    .execute(query, &[&"not found", &job_result.job_id])
-                    .await?;
-            }
+            // 执行更新操作
+            let _ = self
+                .client
+                .execute(query, &[&job_result.status, &job_result.job_id])
+                .await?;
         }
 
         Ok(())

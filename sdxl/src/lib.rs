@@ -1,10 +1,11 @@
+use colored::Colorize;
 use config::CONFIG;
 use primitives::{
     job_status::{JobResult, JobStatusReq},
     sdxl::{Img2ImgRequest, SDXLJobRequest},
     Job, JobType,
 };
-use reqwest::Client;
+use reqwest::{Client, Error, Response};
 use serde::Serialize;
 use std::time::Duration;
 
@@ -20,28 +21,29 @@ impl SDXLClient {
         }
     }
 
-    pub async fn handle(&self, job: Job) {
-        if job.job_type == JobType::Txt2Img {
-            return self.handle_txt_2_img(job).await;
-        }
-
-        if job.job_type == JobType::Img2Img {
-            return self.handle_img_2_img(job).await;
+    pub async fn handle(&self, job: Job) -> Result<Response, reqwest::Error> {
+        match job.job_type {
+            JobType::Txt2Img => {
+                return self.handle_txt_2_img(job).await;
+            }
+            JobType::Img2Img => {
+                return self.handle_img_2_img(job).await;
+            }
         }
     }
 }
 
 impl SDXLClient {
-    pub async fn handle_txt_2_img(&self, job: Job) {
+    pub async fn handle_txt_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
         let data = SDXLJobRequest::new(job);
-        println!("SDXL data: {:#?}", data);
+        println!("SDXL SDXLJobRequest: {:#?}", data);
 
         let url = format!("{}/txt2img", CONFIG.sdxl.normal);
 
         self.post(&data, &url).await
     }
 
-    pub async fn handle_img_2_img(&self, job: Job) {
+    pub async fn handle_img_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
         let data = Img2ImgRequest::new(job);
         let url = format!("{}/img2img", CONFIG.sdxl.normal);
 
@@ -50,7 +52,7 @@ impl SDXLClient {
 }
 
 impl SDXLClient {
-    async fn post<T>(&self, data: &T, url: &str)
+    async fn post<T>(&self, data: &T, url: &str) -> Result<Response, Error>
     where
         T: Serialize + ?Sized,
     {
@@ -62,15 +64,16 @@ impl SDXLClient {
             .json(&data) // Automatically serializes the struct to JSON
             .timeout(Duration::from_secs(6)) // Set timeout
             .send() // This is now an asynchronous call
-            .await // Await the response
-            .unwrap(); // Handle errors appropriately in production code
+            .await?;
 
         // Check if the response was successful
         if response.status().is_success() {
-            println!("SDXL Job request sent successfully!");
+            println!("{}", "SDXL Job request sent successfully!".green());
         } else {
             eprintln!("Failed to send job request: {}", response.status());
         }
+
+        Ok(response)
     }
 }
 
@@ -89,8 +92,7 @@ impl SDXLClient {
             .json(&request) // Automatically serializes the struct to JSON
             .timeout(Duration::from_secs(6)) // Set timeout
             .send() // This is now an asynchronous call
-            .await // Await the response
-            .unwrap(); // Handle errors appropriately in production code
+            .await?;
 
         // Check if the response was successful
         if response.status().is_success() {

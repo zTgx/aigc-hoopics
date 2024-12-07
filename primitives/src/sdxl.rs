@@ -48,7 +48,7 @@ impl Img2ImgRequest {
             },
             style: job.job_style.to_string(),
             model_type: job.model.to_string(),
-            img_url: job.img_link.unwrap(),
+            img_url: job.img_link.expect("img link is empty"),
         }
     }
 }

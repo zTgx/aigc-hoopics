@@ -1264,6 +1264,7 @@ name = "sdxl"
 version = "0.1.0"
 dependencies = [
  "async_once",
+ "colored",
  "config",
  "primitives",
  "reqwest",

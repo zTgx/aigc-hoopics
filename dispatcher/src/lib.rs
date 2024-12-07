@@ -20,9 +20,14 @@ impl Dispatcher {
 }
 
 impl Dispatcher {
-    pub async fn dispatch(&self, job: Job) {
-        if job.model == ModelType::SDXL {
-            return self.sdxl.handle(job).await;
+    pub async fn dispatch(&self, job: Job) -> Result<reqwest::Response, reqwest::Error> {
+        match job.model {
+            ModelType::SDXL => {
+                return self.sdxl.handle(job).await;
+            }
+            ModelType::FLUX => {
+                return self.sdxl.handle(job).await;
+            }
         }
     }
 }

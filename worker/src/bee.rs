@@ -21,13 +21,15 @@ impl Worker {
                 println!("Processing job: {:#?}", param);
 
                 let job = re_mapping_job(&param).await;
-                // psql: save to table
+
                 if let Err(e) = engine.save_job(job.clone()).await {
                     eprintln!("Error saving job: {}", e);
                 }
 
                 // Here you would call your job processing logic
-                dispatcher.dispatch(job).await;
+                if let Err(e) = dispatcher.dispatch(job).await {
+                    eprintln!("Error dispatch job: {}", e);
+                }
             }
         });
     }
