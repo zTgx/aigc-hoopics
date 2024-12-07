@@ -14,3 +14,4 @@ sdxl = { path = "../sdxl" }
 primitives = { path = "../primitives" }
 dispatcher = { path = "../dispatcher" }
 psql = { path = "../psql" }
+config = { path = "../config" }

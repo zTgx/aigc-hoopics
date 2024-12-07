@@ -3,14 +3,34 @@ pub mod error;
 pub mod middleware;
 pub mod routes;
 
+use config::CONFIG;
 use routes::api_routes;
+use std::net::SocketAddr;
 
-// #[tokio::main]
 pub async fn start() {
-    // Combine all routes for v1 and v2
-    let api_routes = api_routes();
+    print_logo();
 
-    // Start the server on port 3030
-    println!("Server running on http://127.0.0.1:3030");
-    warp::serve(api_routes).run(([127, 0, 0, 1], 3030)).await;
+    let addr = format!("{}:{}", CONFIG.service.endpoint, CONFIG.service.port);
+    println!("Server running on {}", addr);
+
+    let socket_addr: SocketAddr = addr.parse().expect("Invalid address format");
+    warp::serve(api_routes()).run(socket_addr).await;
+}
+
+fn print_logo() {
+    let logo = r#"
+      ___           ___           ___           ___                       ___           ___     
+     /\__\         /\  \         /\  \         /\  \          ___        /\  \         /\  \    
+    /:/  /        /::\  \       /::\  \       /::\  \        /\  \      /::\  \       /::\  \   
+   /:/__/        /:/\:\  \     /:/\:\  \     /:/\:\  \       \:\  \    /:/\:\  \     /:/\ \  \  
+  /::\  \ ___   /:/  \:\  \   /:/  \:\  \   /::\~\:\  \      /::\__\  /:/  \:\  \   _\:\~\ \  \ 
+ /:/\:\  /\__\ /:/__/ \:\__\ /:/__/ \:\__\ /:/\:\ \:\__\  __/:/\/__/ /:/__/ \:\__\ /\ \:\ \ \__\
+ \/__\:\/:/  / \:\  \ /:/  / \:\  \ /:/  / \/__\:\/:/  / /\/:/  /    \:\  \  \/__/ \:\ \:\ \/__/
+      \::/  /   \:\  /:/  /   \:\  /:/  /       \::/  /  \::/__/      \:\  \        \:\ \:\__\  
+      /:/  /     \:\/:/  /     \:\/:/  /         \/__/    \:\__\       \:\  \        \:\/:/  /  
+     /:/  /       \::/  /       \::/  /                    \/__/        \:\__\        \::/  /   
+     \/__/         \/__/         \/__/                                   \/__/         \/__/    
+
+"#;
+    println!("{}", logo);
 }

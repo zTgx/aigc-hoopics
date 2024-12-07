@@ -1,6 +1,7 @@
-[hoopics]
+[service]
 api_key = "your_api_key_here"
-endpoint = "https://api.hoopics.com/v1/"
+endpoint = "127.0.0.1"
+port = 3030
 
 [ollama]
 model = "impactframes/llama3_ifai_sd_prompt_mkr_q4km"

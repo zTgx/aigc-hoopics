@@ -20,9 +20,10 @@ impl Default for OllamaConfig {
 }
 
 #[derive(Deserialize, Debug, Clone)]
-pub struct HoopicsConfig {
+pub struct ServiceConfig {
     pub api_key: String,
     pub endpoint: String,
+    pub port: u32,
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -81,7 +82,7 @@ pub struct WorkerConfig {
 #[derive(Deserialize, Debug, Clone)]
 pub struct Config {
     pub ollama: OllamaConfig,
-    pub hoopics: HoopicsConfig,
+    pub service: ServiceConfig,
     pub postgres: PsqlConfig,
     pub sdxl: SDXLConfig,
     pub flux: FluxConfig,
