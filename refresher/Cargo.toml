@@ -13,3 +13,4 @@ colored = "2.0"
 dispatcher = { path = "../dispatcher" }
 psql = { path = "../psql" }
 primitives = { path = "../primitives" }
+config = { path = "../config" }

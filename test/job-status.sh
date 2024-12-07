@@ -1,4 +1,4 @@
-curl -X POST http://localhost:3030/v1/job-status -H "Authorization: Bearer valid_token" -H "Content-Type: application/json" -d '{"job_ids": ["cf628bc0-c15f-4966-aab6-f0c3e8bd2b57", "acf2e880-de0b-4052-807d-dbc14f4ff52b"]}'  | jq .
+curl -X POST http://localhost:3030/v1/job-status -H "Authorization: Bearer valid_token" -H "Content-Type: application/json" -d '{"job_ids": ["a123a974-a6a3-4e0f-883a-41fcaf41a93c", "acf2e880-de0b-4052-807d-dbc14f4ff52b"]}'  | jq .
 
 # [
 #   {

@@ -14,9 +14,3 @@ sdxl = { path = "../sdxl" }
 primitives = { path = "../primitives" }
 dispatcher = { path = "../dispatcher" }
 psql = { path = "../psql" }
-
-[dependencies.uuid]
-version = "1.11.0"
-features = [
-    "v4",                # Lets you generate random UUIDs
-]

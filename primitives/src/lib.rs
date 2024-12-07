@@ -10,12 +10,14 @@ use serde_repr::{Deserialize_repr, Serialize_repr};
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Job {
     pub id: String,
+    pub api_key: String,
     pub prompt: String,
-    pub negative_prompt: String,
+    pub updated_prompt: Option<String>,
+    pub negative_prompt: Option<String>,
     pub job_type: JobType,
-    pub img_link: String,
+    pub img_link: Option<String>,
     pub priority: Priority,
-    pub description: String,
+    pub description: Option<String>,
     pub job_style: JobStyle,
     pub model: ModelType,
     pub width: u16,
@@ -64,6 +66,17 @@ pub enum Priority {
     High = 3,
     VeryHigh = 4,
 }
+impl ToString for Priority {
+    fn to_string(&self) -> String {
+        match self {
+            Priority::VeryLow => "VeryLow".to_string(),
+            Priority::Low => "Low".to_string(),
+            Priority::Medium => "Medium".to_string(),
+            Priority::High => "High".to_string(),
+            Priority::VeryHigh => "VeryHigh".to_string(),
+        }
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize_repr, Deserialize_repr)]
 #[repr(u8)]
@@ -72,6 +85,16 @@ pub enum JobStyle {
     Cartoon = 1,
     Cyberpunk = 2,
     Film = 3,
+}
+impl ToString for JobStyle {
+    fn to_string(&self) -> String {
+        match self {
+            JobStyle::Normal => "normal".to_string(),
+            JobStyle::Cartoon => "cartoon".to_string(),
+            JobStyle::Cyberpunk => "cyberpunk".to_string(),
+            JobStyle::Film => "film".to_string(),
+        }
+    }
 }
 
 #[cfg(test)]

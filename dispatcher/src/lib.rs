@@ -2,7 +2,7 @@ pub mod rules;
 
 use primitives::{
     job_status::{JobResult, JobStatusReq},
-    Job,
+    Job, ModelType,
 };
 use sdxl::SDXLClient;
 
@@ -21,7 +21,7 @@ impl Dispatcher {
 
 impl Dispatcher {
     pub async fn dispatch(&self, job: Job) {
-        if job.model == job.model {
+        if job.model == ModelType::SDXL {
             return self.sdxl.handle(job).await;
         }
     }

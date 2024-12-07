@@ -1,4 +1,4 @@
-# hoopics 幻图妙盒 AI后端
+# AIGC service
 
 * 运行
 ```shell

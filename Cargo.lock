@@ -1029,20 +1029,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "953ec861398dccce10c670dfeaf3ec4911ca479e9c02154b3a215178c5f566f2"
 
 [[package]]
-name = "postgres"
-version = "0.19.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95c918733159f4d55d2ceb262950f00b0aebd6af4aa97b5a47bb0655120475ed"
-dependencies = [
- "bytes",
- "fallible-iterator",
- "futures-util",
- "log",
- "tokio",
- "tokio-postgres",
-]
-
-[[package]]
 name = "postgres-protocol"
 version = "0.6.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1067,6 +1053,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f66ea23a2d0e5734297357705193335e0a957696f34bed2f2faefacb2fec336f"
 dependencies = [
  "bytes",
+ "chrono",
  "fallible-iterator",
  "postgres-protocol",
 ]
@@ -1106,9 +1093,11 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "config",
- "postgres",
+ "lazy_static",
  "primitives",
  "serde",
+ "tokio",
+ "tokio-postgres",
 ]
 
 [[package]]
@@ -1164,6 +1153,7 @@ name = "refresher"
 version = "0.1.0"
 dependencies = [
  "colored",
+ "config",
  "dispatcher",
  "inspector",
  "lazy_static",
@@ -1371,7 +1361,6 @@ dependencies = [
  "sdxl",
  "serde",
  "serde_json",
- "uuid",
  "warp",
  "worker",
 ]
@@ -2133,11 +2122,14 @@ dependencies = [
  "dispatcher",
  "inspector",
  "lazy_static",
+ "ollama",
  "primitives",
+ "psql",
  "sdxl",
  "serde",
  "serde_json",
  "tokio",
+ "uuid",
 ]
 
 [[package]]

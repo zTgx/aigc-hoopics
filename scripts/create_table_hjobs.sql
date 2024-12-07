@@ -1,0 +1,20 @@
+CREATE TABLE hjobs (
+    id BIGSERIAL PRIMARY KEY,
+    api_key VARCHAR(255) NOT NULL,
+    job_id VARCHAR(128) NOT NULL UNIQUE,
+    job_type VARCHAR(64) NOT NULL,
+    job_style VARCHAR(64) NOT NULL,
+    job_priority VARCHAR(64) NOT NULL,
+    job_status VARCHAR(64) NOT NULL,
+    job_processor VARCHAR(128) NOT NULL,
+    job_model VARCHAR(64) NOT NULL,
+    job_description TEXT,
+    prompt TEXT NOT NULL,
+    negative_prompt TEXT,
+    updated_prompt TEXT,
+    img_link VARCHAR(255),
+    output_image_url VARCHAR(1024),
+    resolution VARCHAR(64),
+    created_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_time TIMESTAMP WITH TIME ZONE
+);

@@ -1,26 +1,29 @@
+use crate::Job;
 use serde::{Deserialize, Serialize};
-
-use crate::{Job, JobStyle, ModelType};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SDXLJobRequest {
-    pub prompt: String,
     pub job_id: String,
-    pub style: JobStyle,
-    pub model_type: ModelType,
+    pub style: String,
+    pub model_type: String,
+    pub prompt: String,
     pub width: u16,
     pub height: u16,
 }
 
-impl From<Job> for SDXLJobRequest {
-    fn from(item: Job) -> Self {
-        SDXLJobRequest {
-            prompt: item.prompt,
-            job_id: item.id,
-            style: item.job_style,
-            model_type: item.model,
-            width: item.width,
-            height: item.height,
+impl SDXLJobRequest {
+    pub fn new(job: Job) -> Self {
+        Self {
+            job_id: job.id,
+            style: job.job_style.to_string(),
+            model_type: job.model.to_string(),
+            prompt: if let Some(updated_prompt) = job.updated_prompt {
+                updated_prompt
+            } else {
+                job.prompt
+            },
+            width: job.width,
+            height: job.height,
         }
     }
 }
@@ -30,18 +33,22 @@ pub struct Img2ImgRequest {
     prompt: String,
     job_id: String,
     img_url: String,
-    style: JobStyle,
-    model_type: ModelType,
+    style: String,
+    model_type: String,
 }
 
-impl From<Job> for Img2ImgRequest {
-    fn from(item: Job) -> Self {
-        Img2ImgRequest {
-            prompt: item.prompt,
-            job_id: item.id,
-            style: item.job_style,
-            model_type: item.model,
-            img_url: item.img_link,
+impl Img2ImgRequest {
+    pub fn new(job: Job) -> Self {
+        Self {
+            job_id: job.id,
+            prompt: if let Some(updated_prompt) = job.updated_prompt {
+                updated_prompt
+            } else {
+                job.prompt
+            },
+            style: job.job_style.to_string(),
+            model_type: job.model.to_string(),
+            img_url: job.img_link.unwrap(),
         }
     }
 }

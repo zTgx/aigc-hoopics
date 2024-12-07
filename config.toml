@@ -21,6 +21,7 @@ normal = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
 
 # 单位秒: txt2img / img2img 都需要时间，定期去SDX、FLUX上查询status
 [refresher]
+print_log = false # 是否打印日志到terminal
 sdxl_interval = 15 # sdxl 速度快
 flux_interval = 30 # flux 速度慢
 

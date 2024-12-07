@@ -1,4 +1,5 @@
 use colored::Colorize;
+use config::CONFIG;
 use dispatcher::Dispatcher;
 use lazy_static::lazy_static;
 use primitives::ModelType;
@@ -18,20 +19,25 @@ impl Refresher {
     // 启动定时器任务的函数，这里启动两个不同间隔的定时器
     pub fn start(&self) {
         let dispatcher = Dispatcher::new();
+        let should_print_log = CONFIG.refresher.print_log;
 
         // 启动第一个定时器，每隔5秒执行一次任务
         let dispatcher_clone = dispatcher.clone(); // 克隆 dispatcher，以便在异步任务中使用
-                                                   // 启动第一个定时器，每隔5秒执行一次任务
         task::spawn(async move {
             let mut interval = tokio::time::interval(Duration::from_secs(5));
             loop {
                 interval.tick().await;
-                println!("{}", "SDXL task: Checking status...".yellow());
+
+                if should_print_log {
+                    println!("{}", "SDXL task: Checking status...".yellow());
+                }
 
                 let ids = Engine::fetch_pending_or_processing_job_ids(ModelType::SDXL);
                 match dispatcher_clone.check_status(ids.into()).await {
                     Ok(result) => {
-                        println!("{}\n{:#?}", "SDXL job status: ".yellow(), result);
+                        if should_print_log {
+                            println!("{}\n{:#?}", "SDXL job status: ".yellow(), result);
+                        }
                     }
                     Err(e) => {
                         eprintln!("Error checking SDXL status: {}", e);
@@ -42,17 +48,21 @@ impl Refresher {
 
         // 启动第二个定时器，每隔10秒执行一次任务
         let dispatcher_clone = dispatcher.clone(); // 克隆 dispatcher，以便在异步任务中使用
-                                                   // 启动第二个定时器，每隔10秒执行一次任务
         task::spawn(async move {
             let mut interval = tokio::time::interval(Duration::from_secs(10));
             loop {
                 interval.tick().await;
-                println!("{}", "FLUX task: Checking another status...".purple());
+
+                if should_print_log {
+                    println!("{}", "FLUX task: Checking another status...".purple());
+                }
 
                 let ids = Engine::fetch_pending_or_processing_job_ids(ModelType::FLUX);
                 match dispatcher_clone.check_status(ids.into()).await {
                     Ok(result) => {
-                        println!("{}\n{:#?}", "FLUX job status: ".purple(), result);
+                        if should_print_log {
+                            println!("{}\n{:#?}", "FLUX job status: ".purple(), result);
+                        }
                     }
                     Err(e) => {
                         eprintln!("Error checking FLUX status: {}", e);

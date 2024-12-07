@@ -33,14 +33,16 @@ impl SDXLClient {
 
 impl SDXLClient {
     pub async fn handle_txt_2_img(&self, job: Job) {
-        let data: SDXLJobRequest = job.into();
+        let data = SDXLJobRequest::new(job);
+        println!("SDXL data: {:#?}", data);
+
         let url = format!("{}/txt2img", CONFIG.sdxl.normal);
 
         self.post(&data, &url).await
     }
 
     pub async fn handle_img_2_img(&self, job: Job) {
-        let data: Img2ImgRequest = job.into();
+        let data = Img2ImgRequest::new(job);
         let url = format!("{}/img2img", CONFIG.sdxl.normal);
 
         self.post(&data, &url).await
@@ -67,7 +69,7 @@ impl SDXLClient {
 
         // Check if the response was successful
         if response.status().is_success() {
-            println!("Job request sent successfully!");
+            // println!("Job request sent successfully!");
         } else {
             eprintln!("Failed to send job request: {}", response.status());
         }
@@ -94,7 +96,7 @@ impl SDXLClient {
 
         // Check if the response was successful
         if response.status().is_success() {
-            println!("Job request sent successfully!");
+            // println!("Job request sent successfully!");
         } else {
             eprintln!("Failed to send job request: {}", response.status());
         }

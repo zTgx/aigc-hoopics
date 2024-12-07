@@ -1,6 +1,6 @@
 use config::CONFIG;
-use postgres::{Client, Error, NoTls, Row};
 use primitives::{Job, ModelType};
+use tokio_postgres::{Client, NoTls};
 
 #[macro_export]
 macro_rules! create_connection_postgres_string {
@@ -17,49 +17,31 @@ fn database_url() -> String {
 }
 
 pub struct Engine {
-    client: Client,
+    pub client: Client,
 }
 
 impl Engine {
-    pub fn new() -> Self {
-        let client = Client::connect(&database_url(), NoTls).unwrap();
+    pub async fn new() -> Self {
+        let (client, connection) = tokio_postgres::connect(&database_url(), NoTls)
+            .await
+            .unwrap();
+
+        // Spawn the connection on a separate task to handle it asynchronously
+        tokio::spawn(async move {
+            if let Err(e) = connection.await {
+                eprintln!("Connection error: {}", e);
+            }
+        });
+
         Self { client }
     }
-}
 
-pub trait EngineOp {
-    fn insert(&mut self, sql: &str);
-    fn query(&mut self, sql: &str) -> Result<Vec<Row>, Error>;
-}
-
-impl EngineOp for Engine {
-    fn insert(&mut self, _sql: &str) {
-        // let data = None::<&[u8]>;
-        // self.client.execute(
-        // "INSERT INTO person (name, data) VALUES ($1, $2)",
-        // &[&name, &data],
-        // ).unwrap();
-    }
-
-    fn query(&mut self, _sql: &str) -> Result<Vec<Row>, Error> {
-        for row in self.client.query("SELECT * FROM hjobs", &[]).unwrap() {
-            let prompt: &str = row.get(2);
-            println!("found prompt: {:?}", prompt);
-        }
-
-        todo!()
-    }
-}
-
-impl Engine {
     pub fn fetch_pending_or_processing_job_ids(_model_type: ModelType) -> Vec<String> {
         vec!["cf628bc0-c15f-4966-aab6-f0c3e8bd2b57".to_string()]
     }
-}
 
-impl Engine {
-    // save job to hjobs table
-    pub fn save_job(&mut self, job: &Job) {
-        
+    // Save job to hjobs table
+    pub async fn save_job(&mut self, job: Job) -> Result<(), tokio_postgres::Error> {
+        self.insert_hjob(job.into()).await
     }
 }

@@ -1,22 +1,30 @@
-use crate::queue::JobQueue;
+use crate::{queue::JobQueue, re_mapping_job};
 use dispatcher::Dispatcher;
-use primitives::Job;
+use primitives::job_req::JobParams;
+use psql::engine::Engine;
 use tokio::sync::{mpsc, OnceCell};
 
 pub struct Worker;
-
 impl Worker {
     fn new() -> Self {
         Worker {}
     }
 
-    fn start(&self, mut receiver: mpsc::Receiver<Job>) {
+    fn start(&self, mut receiver: mpsc::Receiver<JobParams>) {
         // Start processing jobs in a separate task
         tokio::spawn(async move {
             let dispatcher = Dispatcher::new();
-            while let Some(job) = receiver.recv().await {
+            let mut engine = Engine::new().await;
+
+            while let Some(param) = receiver.recv().await {
                 // Process each job received from the channel
-                println!("Processing job: {:?}", job);
+                println!("Processing job: {:#?}", param);
+
+                let job = re_mapping_job(&param).await;
+                // psql: save to table
+                if let Err(e) = engine.save_job(job.clone()).await {
+                    eprintln!("Error saving job: {}", e);
+                }
 
                 // Here you would call your job processing logic
                 dispatcher.dispatch(job).await;
@@ -42,8 +50,8 @@ impl JobManager {
     }
 
     // Method to submit jobs
-    pub async fn submit_job(&self, job: Job) {
-        self.job_queue.add_job(job).await; // Submit a job asynchronously
+    pub async fn submit_job(&self, param: JobParams) {
+        self.job_queue.add_job(param).await; // Submit a job asynchronously
     }
 }
 

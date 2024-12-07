@@ -7,11 +7,11 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JobParams {
     pub prompt: String,
-    pub negative_prompt: String,
+    pub negative_prompt: Option<String>,
     pub job_type: JobType,
-    pub img_link: String,
+    pub img_link: Option<String>,
     pub priority: Priority,
-    pub description: String,
+    pub description: Option<String>,
     pub job_style: JobStyle,
     pub model: ModelType,
     pub width: u16,
@@ -32,27 +32,33 @@ impl Inspector for JobParams {
         }
 
         // Check negative prompt length
-        if self.negative_prompt.len() > checkpoints.max_length_negative_prompt {
-            return Err(format!(
-                "Negative prompt length exceeds maximum of 200 characters. Current length: {}",
-                self.negative_prompt.len()
-            ));
+        if let Some(negative_prompt) = &self.negative_prompt {
+            if negative_prompt.len() > checkpoints.max_length_negative_prompt {
+                return Err(format!(
+                    "Negative prompt length exceeds maximum of 200 characters. Current length: {}",
+                    negative_prompt.len()
+                ));
+            }
         }
 
         // Check description length
-        if self.description.len() > checkpoints.max_length_description {
-            return Err(format!(
-                "Description length exceeds maximum of 200 characters. Current length: {}",
-                self.description.len()
-            ));
+        if let Some(description) = &self.description {
+            if description.len() > checkpoints.max_length_description {
+                return Err(format!(
+                    "Description length exceeds maximum of 200 characters. Current length: {}",
+                    description.len()
+                ));
+            }
         }
 
         // Check img_link length
-        if self.img_link.len() > checkpoints.max_length_img_link {
-            return Err(format!(
-                "Image link length exceeds maximum of 256 characters. Current length: {}",
-                self.img_link.len()
-            ));
+        if let Some(img_link) = &self.img_link {
+            if img_link.len() > checkpoints.max_length_img_link {
+                return Err(format!(
+                    "Image link length exceeds maximum of 256 characters. Current length: {}",
+                    img_link.len()
+                ));
+            }
         }
 
         // Check image width
@@ -74,12 +80,12 @@ impl Inspector for JobParams {
 
         match self.job_type {
             JobType::Txt2Img => {
-                if !self.img_link.is_empty() {
+                if self.img_link.is_some() {
                     return Err("img_link should be empty for Txt2Img jobs".to_string());
                 }
             }
             JobType::Img2Img => {
-                if self.img_link.is_empty() {
+                if self.img_link.is_none() {
                     return Err("img_link is required for Img2Img jobs".to_string());
                 }
             }
@@ -123,11 +129,17 @@ mod tests {
 
         // Assertions to verify the deserialized values
         assert_eq!(job_params.prompt, "Generate an image of a sunset");
-        assert_eq!(job_params.negative_prompt, "blurry");
+        assert_eq!(job_params.negative_prompt, Some("blurry".to_string()));
         assert_eq!(job_params.job_type, JobType::Txt2Img); // Ensure this matches the enum definition
-        assert_eq!(job_params.img_link, "http://example.com/image.png");
+        assert_eq!(
+            job_params.img_link,
+            Some("http://example.com/image.png".to_string())
+        );
         assert_eq!(job_params.priority, Priority::Low);
-        assert_eq!(job_params.description, "A job for generating images.");
+        assert_eq!(
+            job_params.description,
+            Some("A job for generating images.".to_string())
+        );
         assert_eq!(job_params.job_style, JobStyle::Normal);
         assert_eq!(job_params.model, ModelType::SDXL); // Ensure this matches the enum or struct definition
         assert_eq!(job_params.width, 512);
