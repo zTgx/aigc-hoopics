@@ -38,15 +38,6 @@ fn v2_routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejectio
     // Define GET /v2/hello
     let hello_v2 = warp::path!("v2" / "hello").map(|| warp::reply::json(&"Hello from v2!"));
 
-    // Define POST /v2/data
-    let data_v2 = warp::path!("v2" / "data")
-        .and(warp::post())
-        .and(warp::body::json())
-        .map(|body: serde_json::Value| {
-            // Process the incoming JSON data
-            warp::reply::json(&body)
-        });
-
     // Combine routes
-    hello_v2.or(data_v2)
+    hello_v2
 }

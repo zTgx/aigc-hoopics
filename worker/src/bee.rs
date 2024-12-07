@@ -19,7 +19,7 @@ impl Worker {
             while let Some(param) = receiver.recv().await {
                 let job = re_mapping_job(&param).await;
 
-                println!("Processing job: {:#?}", param);
+                println!("Processing job: {:#?}", job);
 
                 if let Err(e) = engine.save_job(job.clone()).await {
                     eprintln!("Error saving job: {}", e);
