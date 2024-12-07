@@ -3,6 +3,7 @@ use chrono::{DateTime, Utc};
 use primitives::Job;
 use tokio_postgres::Error;
 
+// 对应数据表结构
 #[derive(Debug)]
 pub struct HJob {
     pub api_key: String,
