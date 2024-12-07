@@ -2,7 +2,7 @@ use crate::Job;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct SDXLJobRequest {
+pub struct Txt2ImgRequest {
     pub job_id: String,
     pub style: String,
     pub model_type: String,
@@ -11,7 +11,7 @@ pub struct SDXLJobRequest {
     pub height: u16,
 }
 
-impl SDXLJobRequest {
+impl Txt2ImgRequest {
     pub fn new(job: Job) -> Self {
         Self {
             job_id: job.id,

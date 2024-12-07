@@ -11,6 +11,6 @@ members = [
     "primitives", 
     "dispatcher", 
     "refresher"
-]
+, "flux"]
 resolver = "2"
 

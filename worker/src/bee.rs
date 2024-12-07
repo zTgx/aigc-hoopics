@@ -17,16 +17,14 @@ impl Worker {
             let mut engine = Engine::new().await;
 
             while let Some(param) = receiver.recv().await {
-                // Process each job received from the channel
-                println!("Processing job: {:#?}", param);
-
                 let job = re_mapping_job(&param).await;
+
+                println!("Processing job: {:#?}", param);
 
                 if let Err(e) = engine.save_job(job.clone()).await {
                     eprintln!("Error saving job: {}", e);
                 }
 
-                // Here you would call your job processing logic
                 if let Err(e) = dispatcher.dispatch(job).await {
                     eprintln!("Error dispatch job: {}", e);
                 }

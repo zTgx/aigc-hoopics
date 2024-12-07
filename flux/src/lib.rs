@@ -3,18 +3,18 @@ use config::CONFIG;
 use primitives::{
     job_status::{JobResult, JobStatusReq},
     sdxl::{Img2ImgRequest, Txt2ImgRequest},
-    select_sdxl_config, Job, JobType,
+    select_flux_config, Job, JobType,
 };
 use reqwest::{Client, Error, Response};
 use serde::Serialize;
 use std::time::Duration;
 
 #[derive(Clone)]
-pub struct SDXLClient {
+pub struct FLUXClient {
     client: Client,
 }
 
-impl SDXLClient {
+impl FLUXClient {
     pub fn new() -> Self {
         Self {
             client: Client::new(),
@@ -33,25 +33,23 @@ impl SDXLClient {
     }
 }
 
-impl SDXLClient {
-    pub async fn handle_txt_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
-        let url = format!("{}/txt2img", select_sdxl_config!(&job.job_style));
+impl FLUXClient {
+    async fn handle_txt_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
+        let url = format!("{}/txt2img", select_flux_config!(&job.job_style));
 
         let data = Txt2ImgRequest::new(job);
-        // println!("SDXL Txt2ImgRequest: {:#?}", data);
         self.post(&data, &url).await
     }
 
-    pub async fn handle_img_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
-        let url = format!("{}/img2img", select_sdxl_config!(&job.job_style));
+    async fn handle_img_2_img(&self, job: Job) -> Result<Response, reqwest::Error> {
+        let url = format!("{}/img2img", select_flux_config!(&job.job_style));
 
         let data = Img2ImgRequest::new(job);
-        // println!("SDXL Img2ImgRequest: {:#?}", data);
         self.post(&data, &url).await
     }
 }
 
-impl SDXLClient {
+impl FLUXClient {
     async fn post<T>(&self, data: &T, url: &str) -> Result<Response, Error>
     where
         T: Serialize + ?Sized,
@@ -68,7 +66,7 @@ impl SDXLClient {
 
         // Check if the response was successful
         if response.status().is_success() {
-            println!("{}", "SDXL Job request sent successfully!".green());
+            println!("{}", "FLUX Job request sent successfully!".green());
         } else {
             eprintln!("Failed to send job request: {}", response.status());
         }
@@ -77,12 +75,12 @@ impl SDXLClient {
     }
 }
 
-impl SDXLClient {
+impl FLUXClient {
     pub async fn handle_job_status(
         &self,
         request: JobStatusReq,
     ) -> Result<Vec<JobResult>, reqwest::Error> {
-        let link = format!("{}/get_task_status_batch", CONFIG.sdxl.normal);
+        let link = format!("{}/get_task_status_batch", CONFIG.flux.normal);
 
         // Send the POST request asynchronously
         let response = self
@@ -96,7 +94,7 @@ impl SDXLClient {
 
         // Check if the response was successful
         if response.status().is_success() {
-            println!("{}", "SDXL Job status request sent successfully!".green());
+            println!("{}", "FLUX Job status request sent successfully!".green());
         } else {
             eprintln!("Failed to send job request: {}", response.status());
         }

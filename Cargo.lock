@@ -226,6 +226,7 @@ dependencies = [
 name = "dispatcher"
 version = "0.1.0"
 dependencies = [
+ "flux",
  "primitives",
  "psql",
  "reqwest",
@@ -280,6 +281,19 @@ name = "fastrand"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "486f806e73c5707928240ddc295403b1b93c96a02038563881c4a2fd84b81ac4"
+
+[[package]]
+name = "flux"
+version = "0.1.0"
+dependencies = [
+ "async_once",
+ "colored",
+ "config",
+ "primitives",
+ "reqwest",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "fnv"

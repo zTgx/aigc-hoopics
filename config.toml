@@ -30,7 +30,7 @@ film = "https://u447140-9ec2-9aec6315.bjb1.seetacloud.com:8443"
 [refresher]
 print_log = true # 是否打印日志到terminal
 sdxl_interval = 15 # sdxl 速度快
-flux_interval = 30000000000 # flux 速度慢
+flux_interval = 60 # flux 速度慢
 
 [checkpoints]
 max_length_prompt = 1500
