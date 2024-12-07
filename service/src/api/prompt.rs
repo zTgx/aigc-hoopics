@@ -1,5 +1,6 @@
 use crate::error::ServiceError;
 use crate::middleware::auth::User;
+use censorship::cprompt::is_legality_prompt;
 use inspector::Inspector;
 use ollama::Llama;
 use primitives::ollama::{PromptRequest, PromptResponse};
@@ -14,9 +15,13 @@ pub async fn handle_request(
         return Err(reject);
     }
 
-    let ollama = Llama::new();
+    if is_legality_prompt(&request.prompt) {
+        return Err(warp::reject::custom(ServiceError {
+            reason: format!("The prompt is iligal!"),
+        }));
+    }
 
-    // Attempt to get the updated prompt and handle potential errors
+    let ollama = Llama::new();
     let updated_prompt = ollama.prompt(&request.prompt.clone()).await.map_err(|e| {
         // Map the error to a custom rejection
         warp::reject::custom(ServiceError {

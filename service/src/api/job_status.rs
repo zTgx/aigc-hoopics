@@ -1,6 +1,7 @@
 use std::convert::Infallible;
 
 use crate::middleware::auth::User;
+use censorship::cimage::is_legality_image;
 use inspector::Inspector;
 use primitives::job_status::JobStatusReq;
 use warp::http::StatusCode;
@@ -19,15 +20,25 @@ pub async fn handle_request(
     }
 
     match dispatcher::Dispatcher::new().check_status(request).await {
-        Ok(result) => {
-            // Return the JSON response with a 200 OK status
+        Ok(results) => {
+            for result in &results {
+                let urls = &result.file_urls;
+                for url in urls {
+                    if is_legality_image(url) {
+                        let reject =
+                            warp::reject::custom(ValidationError("Has ilegal images".to_string()));
+                        return Err(reject);
+                    }
+                }
+            }
+
             Ok(warp::reply::with_status(
-                warp::reply::json(&result),
+                warp::reply::json(&results),
                 StatusCode::OK,
             ))
         }
         Err(e) => {
-            eprintln!("Error checking FLUX status: {}", e);
+            eprintln!("Error checking task status: {}", e);
 
             let reject = warp::reject::custom(ValidationError(e.to_string()));
             Err(reject)

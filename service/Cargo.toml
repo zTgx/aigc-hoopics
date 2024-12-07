@@ -16,3 +16,4 @@ dispatcher = { path = "../dispatcher" }
 psql = { path = "../psql" }
 config = { path = "../config" }
 colored = "2.0"
+censorship = { path = "../censorship" }

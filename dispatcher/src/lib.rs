@@ -39,32 +39,24 @@ impl Dispatcher {
         request: JobStatusReq,
     ) -> Result<Vec<JobResult>, reqwest::Error> {
         let sorted_job_ids = rules::check_status_rules(&request).await.unwrap();
+        // println!(">>> check status, sorted job ids: {:#?}", sorted_job_ids);
 
-        for (model_key, job_ids) in sorted_job_ids {
-            let model_type = match model_key.to_ascii_uppercase().as_str() {
-                "SDXL" => ModelType::SDXL,
-                "FLUX" => ModelType::FLUX,
+        let mut results: Vec<JobResult> = vec![];
+        for (model_key, job_ids) in &sorted_job_ids {
+            match model_key.to_ascii_uppercase().as_str() {
+                "SDXL" => {
+                    let result = self.check_sdxl_status(job_ids.clone()).await?;
+                    results.extend(result);
+                }
+                "FLUX" => {
+                    let result = self.check_flux_status(job_ids.clone()).await?;
+                    results.extend(result);
+                }
                 _ => continue, // Skip unknown model types
             };
-
-            return self.check_model_status(&model_type, job_ids).await;
         }
 
-        Ok(vec![])
-    }
-}
-
-impl Dispatcher {
-    // Define a helper function to check status based on model type
-    async fn check_model_status(
-        &self,
-        model_type: &ModelType,
-        job_ids: Vec<String>,
-    ) -> Result<Vec<JobResult>, reqwest::Error> {
-        match model_type {
-            ModelType::SDXL => self.check_sdxl_status(job_ids).await,
-            ModelType::FLUX => self.check_flux_status(job_ids).await,
-        }
+        Ok(results)
     }
 }
 

@@ -102,3 +102,39 @@ impl FLUXClient {
         response.json::<Vec<JobResult>>().await
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::Result;
+
+    #[test]
+    fn test_parse_job_results() -> Result<()> {
+        let json_data = r#"[{"file_urls":["https://nft1000.oss-cn-beijing.aliyuncs.com/sd_output/txt2img/2024-12-07/t2i-2024-12-07-14-07-18-a123a974-a6a3-4e0f-883a-41fcaf41a93c-0.png"],"job_id":"a123a974-a6a3-4e0f-883a-41fcaf41a93c","status":"success"},{"file_urls":["https://nft1000.oss-cn-beijing.aliyuncs.com/sd_output/txt2img/2024-12-07/t2i-2024-12-07-19-53-13-0e738834-21b8-4d11-85b4-7253768b0e76-0.png"],"job_id":"0e738834-21b8-4d11-85b4-7253768b0e76","status":"success"}]"#;
+
+        let results: Vec<JobResult> = serde_json::from_str(json_data)?;
+
+        // Expected results
+        let expected = vec![
+            JobResult {
+                file_urls: vec![
+                    "https://nft1000.oss-cn-beijing.aliyuncs.com/sd_output/txt2img/2024-12-07/t2i-2024-12-07-14-07-18-a123a974-a6a3-4e0f-883a-41fcaf41a93c-0.png".to_string(),
+                ],
+                job_id: "a123a974-a6a3-4e0f-883a-41fcaf41a93c".to_string(),
+                status: "success".to_string(),
+            },
+            JobResult {
+                file_urls: vec![
+                    "https://nft1000.oss-cn-beijing.aliyuncs.com/sd_output/txt2img/2024-12-07/t2i-2024-12-07-19-53-13-0e738834-21b8-4d11-85b4-7253768b0e76-0.png".to_string(),
+                ],
+                job_id: "0e738834-21b8-4d11-85b4-7253768b0e76".to_string(),
+                status: "success".to_string(),
+            },
+        ];
+
+        // Assert that parsed results match expected values
+        assert_eq!(results, expected);
+
+        Ok(())
+    }
+}

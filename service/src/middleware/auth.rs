@@ -21,7 +21,7 @@ fn validate_token(token: &str) -> bool {
 
 // Filter for authenticated routes
 pub fn with_auth() -> impl Filter<Extract = (User,), Error = warp::Rejection> + Clone {
-    warp::header::optional("authorization").and_then(|auth_header: Option<String>| async move {
+    warp::header::optional("Authorization").and_then(|auth_header: Option<String>| async move {
         match auth_header {
             Some(token) if validate_token(&token) => {
                 Ok(User {

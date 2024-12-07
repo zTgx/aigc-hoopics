@@ -13,7 +13,7 @@ impl From<Vec<String>> for JobStatusReq {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JobResult {
     pub file_urls: Vec<String>, // A vector to hold multiple file URLs
     pub job_id: String,         // The job ID
