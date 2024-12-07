@@ -1,4 +1,5 @@
 use bee::{JobManager, JOBMANAGER};
+use config::CONFIG;
 use ollama::Llama;
 use primitives::{job_req::JobParams, Job};
 use uuid::Uuid;
@@ -10,7 +11,7 @@ pub mod queue;
 pub async fn add_job(param: JobParams) {
     // Initialize JOBMANAGER asynchronously if it hasn't been initialized yet
     JOBMANAGER
-        .get_or_init(|| async { JobManager::new(100).await })
+        .get_or_init(|| async { JobManager::new(CONFIG.worker.max_buffer_size).await })
         .await;
 
     // Submit the job to JOBMANAGER's queue

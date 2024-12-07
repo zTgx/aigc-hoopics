@@ -74,6 +74,11 @@ pub struct CheckpointsConfig {
 }
 
 #[derive(Deserialize, Debug, Clone)]
+pub struct WorkerConfig {
+    pub max_buffer_size: usize,
+}
+
+#[derive(Deserialize, Debug, Clone)]
 pub struct Config {
     pub ollama: OllamaConfig,
     pub hoopics: HoopicsConfig,
@@ -82,6 +87,7 @@ pub struct Config {
     pub flux: FluxConfig,
     pub refresher: RefresherConfig,
     pub checkpoints: CheckpointsConfig,
+    pub worker: WorkerConfig,
 }
 
 // 全局静态配置变量
@@ -100,18 +106,4 @@ fn load_config(filename: &str) -> Result<Config, Box<dyn std::error::Error>> {
     let contents = fs::read_to_string(path)?;
     let config: Config = toml::from_str(&contents)?;
     Ok(config)
-}
-
-// 根据 section name 获取配置
-pub fn get(section: &str) -> Option<&'static dyn std::fmt::Debug> {
-    match section {
-        "ollama" => Some(&CONFIG.ollama),
-        "hoopics" => Some(&CONFIG.hoopics),
-        "postgres" => Some(&CONFIG.postgres),
-        "sdxl" => Some(&CONFIG.sdxl),
-        "flux" => Some(&CONFIG.flux),
-        "refresher" => Some(&CONFIG.refresher),
-
-        _ => None,
-    }
 }

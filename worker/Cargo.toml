@@ -15,6 +15,7 @@ primitives = { path = "../primitives" }
 dispatcher = { path = "../dispatcher" }
 psql = { path = "../psql" }
 ollama = { path = "../ollama" }
+config = { path = "../config" }
 
 [dependencies.uuid]
 version = "1.11.0"

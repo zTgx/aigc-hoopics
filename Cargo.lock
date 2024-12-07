@@ -2119,6 +2119,7 @@ name = "worker"
 version = "0.1.0"
 dependencies = [
  "async_once",
+ "config",
  "dispatcher",
  "inspector",
  "lazy_static",

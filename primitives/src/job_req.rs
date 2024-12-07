@@ -1,6 +1,5 @@
 use crate::{JobStyle, JobType, ModelType, Priority};
 use config::CONFIG;
-// Assuming these are defined elsewhere in your crate
 use inspector::Inspector;
 use serde::{Deserialize, Serialize};
 
@@ -51,16 +50,6 @@ impl Inspector for JobParams {
             }
         }
 
-        // Check img_link length
-        if let Some(img_link) = &self.img_link {
-            if img_link.len() > checkpoints.max_length_img_link {
-                return Err(format!(
-                    "Image link length exceeds maximum of 256 characters. Current length: {}",
-                    img_link.len()
-                ));
-            }
-        }
-
         // Check image width
         if self.width < checkpoints.min_image_width || self.width > checkpoints.max_image_width {
             return Err(format!(
@@ -84,11 +73,19 @@ impl Inspector for JobParams {
                     return Err("img_link should be empty for Txt2Img jobs".to_string());
                 }
             }
-            JobType::Img2Img => {
-                if self.img_link.is_none() {
+            JobType::Img2Img => match &self.img_link {
+                Some(img_link) => {
+                    if img_link.len() > checkpoints.max_length_img_link {
+                        return Err(format!(
+                                "Image link length exceeds maximum of 256 characters. Current length: {}",
+                                img_link.len()
+                            ));
+                    }
+                }
+                None => {
                     return Err("img_link is required for Img2Img jobs".to_string());
                 }
-            }
+            },
         }
 
         // If all checks pass, return Ok(true)

@@ -34,3 +34,6 @@ max_image_width = 1024
 min_image_width = 1
 max_image_height = 1024
 min_image_height = 1
+
+[worker]
+max_buffer_size = 100 # worker 的 channel buffer size 设置
