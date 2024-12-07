@@ -2,27 +2,13 @@ use config::CONFIG;
 use primitives::{job_status::JobResult, Job, ModelType};
 use tokio_postgres::{Client, Error, NoTls};
 
-#[macro_export]
-macro_rules! create_connection_postgres_string {
-    ($host:expr, $user:expr, $password:expr, $port:expr, $dbname:expr) => {
-        format!(
-            "host={} user={} password={} port={} dbname={}",
-            $host, $user, $password, $port, $dbname
-        )
-    };
-}
-
-fn database_url() -> String {
-    CONFIG.postgres.to_string()
-}
-
 pub struct Engine {
     pub client: Client,
 }
 
 impl Engine {
     pub async fn new() -> Self {
-        let (client, connection) = tokio_postgres::connect(&database_url(), NoTls)
+        let (client, connection) = tokio_postgres::connect(&CONFIG.postgres.to_string(), NoTls)
             .await
             .unwrap();
 
