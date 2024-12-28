@@ -1,0 +1,46 @@
+[service]
+api_key = "your_api_key_here"
+endpoint = "127.0.0.1"
+port = 3030
+
+[ollama]
+url = ""
+model = ""
+
+[postgres]
+host = "127.0.0.1"
+port = 5432
+user = ""
+password = ""
+dbname = ""
+
+[sdxl]
+normal = ""
+cartoon = ""
+cyberpunk = ""
+film = ""
+
+[flux]
+normal = ""
+cartoon = ""
+cyberpunk = ""
+film = ""
+
+# 单位秒: txt2img / img2img 都需要时间，定期去SDX、FLUX上查询status
+[refresher]
+print_log = true # 是否打印日志到terminal
+sdxl_interval = 15 # sdxl 速度快
+flux_interval = 60 # flux 速度慢
+
+[checkpoints]
+max_length_prompt = 1500
+max_length_negative_prompt = 200
+max_length_description = 200
+max_length_img_link = 256
+max_image_width = 1024
+min_image_width = 1
+max_image_height = 1024
+min_image_height = 1
+
+[worker]
+max_buffer_size = 100 # worker 的 channel buffer size 设置
