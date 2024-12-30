@@ -6,7 +6,7 @@
 
 ## 配置 config.toml
 ```
-mv example.config.toml config.toml
+cp example.config.toml config.toml
 ```
 
 ## 启动服务
