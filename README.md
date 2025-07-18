@@ -1,15 +1,15 @@
-# Hoopics - 通用AIGC服务
+# Hoopics
 
 ## Features
-* 文生图
-* 图生图
+* Text  to Image  
+* Image to Image
 
-## 配置
+## Config
 ```
 cp example.config.toml config.toml
 ```
 
-## 启动服务
+## Run service
 ```shell
 cargo run
 ```
